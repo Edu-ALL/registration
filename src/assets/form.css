@@ -1,0 +1,143 @@
+.bg-form {
+    /* background: url('/public/img/bg.jpg'); */
+    background-repeat: no-repeat !important;
+    background-position: bottom center !important;
+    background-size: cover !important;
+}
+
+.registration {
+    margin: 5dvh 0;
+    min-height: 90dvh;
+    display: flex;
+    align-items: center;
+}
+
+.registration-card {
+    height: 60vh !important;
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #3498db #2c3e50;
+    /* Change these colors to your desired style */
+}
+
+.registration-card::-webkit-scrollbar {
+    width: 5px;
+}
+
+.registration-card::-webkit-scrollbar-thumb {
+    background-color: #3498db;
+    /* Change this color to your desired thumb color */
+}
+
+.registration-card::-webkit-scrollbar-track {
+    background-color: #2c3e50;
+    /* Change this color to your desired track color */
+}
+
+.form-control, .form-select, .border-form, .form-check-input {
+    box-shadow: none !important;
+    border: 1px solid #eaeaea;
+}
+
+.select2-container--default .select2-selection--multiple {
+    border: 1px solid #f0efef;
+}
+
+small.error {
+    margin-top: -10px !important;
+    font-size: 10px !important;
+}
+
+.form-control {
+    margin-bottom: -5px !important;
+}
+
+.role {
+    position: relative;
+    overflow: hidden;
+}
+
+.role-input {
+    position: absolute;
+    font-size: inherit;
+    top: 5px;
+    right: 5px;
+    z-index: 2;
+}
+
+.role-input:checked~.role-label {
+    height: 200px;
+}
+
+.role img {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    z-index: 0;
+    object-fit: cover;
+    object-position: center;
+}
+
+.role:hover>.role-label {
+    height: 200px;
+}
+
+
+.role-label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    height: 35px;
+    background: #251b815b;
+    display: flex;
+    align-items: end;
+    justify-content: center;
+    padding: 10px;
+    line-height: 1;
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+}
+
+.vs__dropdown-toggle {
+    margin-bottom: -5px;
+}
+
+.vs__search, .vs__search:focus {
+    padding: 4px 8px !important;
+}
+
+.vs__search.is-invalid {
+    border: 1px solid red !important
+}
+
+.vs__search.is-valid {
+    border: 1px solid rgb(29, 161, 93) !important
+}
+
+@media only screen and (max-width: 600px) {
+    .col-form {
+        height: 20vh !important;
+    }
+
+    .role-input:checked~.role-label {
+        height: 100px;
+    }
+    
+    .role img {
+        height: 100px;
+    }
+    
+    .role:hover>.role-label {
+        height: 100px;
+    }
+    
+    
+    .role-label {
+        height: 35px;
+    }
+}
