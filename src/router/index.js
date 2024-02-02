@@ -10,14 +10,6 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
-    },
-    {
       path: '/form/event',
       name: 'event',
       props: (route) => ({ // Menggunakan props untuk mendapatkan parameter
@@ -28,6 +20,18 @@ const router = createRouter({
         status: route.query.status,
       }),
       component: () => import('@/views/event/Form.vue')
+    },
+    {
+      path: '/scan/event',
+      name: 'scan-event',
+      // props: (route) => ({ // Menggunakan props untuk mendapatkan parameter
+      //   formType: route.query.form_type,
+      //   eventId: route.query.event_id,
+      //   eventType: route.query.event_type,
+      //   attendStatus: route.query.attend_status,
+      //   status: route.query.status,
+      // }),
+      component: () => import('@/views/event/Scan.vue')
     },
     {
       path: '/form/program',

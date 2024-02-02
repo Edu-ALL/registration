@@ -5,6 +5,16 @@
     background-size: cover !important;
 }
 
+.logo-menu {
+    width: 140px;
+    height: 140px;
+    object-fit: contain;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
 .registration {
     margin: 5dvh 0;
     min-height: 90dvh;

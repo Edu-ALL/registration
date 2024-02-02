@@ -1,7 +1,14 @@
 <template>
   <div class="container">
-    <div class="row justify-content-center">
+    <div class="row justify-content-center align-items-center" style="min-height: 100dvh">
       <div class="col-md-12">
+        <div class="text-end">
+          <router-link :to="{ name: 'home' }" v-if="status == 'ots'">
+            <div class="btn btn-sm btn-outline-primary mb-2">
+              <font-awesome-icon icon="fa-home" class="me-2"></font-awesome-icon> Back to Home
+            </div>
+          </router-link>
+        </div>
         <div class="row justify-content-center align-items-stretch g-1">
           <div class="col-md-4 col-form" v-if="formType == 'cta'">
             <div
@@ -631,13 +638,11 @@ export default defineComponent({
             progress_array.push(0)
           }
         }
-
       }
-      
+
       progress.value = progress_array.reduce((accumulator, currentValue) => {
         return accumulator + currentValue
       }, 0)
-
     }
 
     const shouldShowError = (field) => {
