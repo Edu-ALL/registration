@@ -449,6 +449,7 @@ import { computed, defineComponent, onMounted, ref } from 'vue'
 import { useVuelidate } from '@vuelidate/core'
 import { required, email, minLength } from '@vuelidate/validators'
 import ApiService from '@/services/ApiService'
+import { showNotif } from '@/helper/notification'
 import School from '../component/School.vue'
 import LeadSource from '../component/LeadSource.vue'
 import Country from '../component/Country.vue'
@@ -471,7 +472,7 @@ export default defineComponent({
   },
   setup(props) {
     const progress = ref(null)
-    const step = ref(2)
+    const step = ref(1)
     const loading = ref(false)
     const bg_registration = ref('bg.jpg')
     const registration = ref({
@@ -549,6 +550,7 @@ export default defineComponent({
     const checkComponent = (data = null) => {
       touchField(data?.key)
       registration.value[data.key] = data?.value
+      checkProgress()
     }
 
     const section_1_rule = ['fullname', 'email', 'phone', 'role']
@@ -687,6 +689,7 @@ export default defineComponent({
     }
 
     const nextProcess = () => {
+      loading.value = true
       const role = registration.value.role
       var validate = false
 
@@ -714,20 +717,20 @@ export default defineComponent({
       if (validate) {
         submit()
       }
+
+      loading.value = false
     }
 
     const submit = async () => {
-      loading.value = true
-      console.log(registration.value);
+      console.log(registration.value)
       const endpoint = 'v1/register/event'
       try {
-        loading.value = false
         const res = await ApiService.post(endpoint, registration.value)
         if (!res.success) {
           errors.value = res.error
+          showNotif('error', 'Please check errors by clicking the bottom right button')
         }
       } catch (error) {
-        loading.value = false
         console.error(error)
       }
     }
