@@ -54,7 +54,7 @@ export default defineComponent({
         })
       } else {
         router.push({
-          name: 'scan-event',
+          name: 'scan-event'
         })
       }
     }

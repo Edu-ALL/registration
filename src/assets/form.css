@@ -25,8 +25,6 @@
 .registration-card {
     height: 60vh !important;
     overflow: auto;
-    scrollbar-width: thin;
-    scrollbar-color: #3498db #2c3e50;
     /* Change these colors to your desired style */
 }
 

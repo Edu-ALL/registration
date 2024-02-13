@@ -1,6 +1,26 @@
 <template>
   <div class="container">
     <div class="row justify-content-center align-items-center" style="min-height: 100dvh">
+      <div class="position-fixed" style="bottom: 2%; left: 95%; z-index: 9999">
+        <div class="dropdown" v-if="errors">
+          <button
+            class="btn btn-danger btn-sm dropdown-toggle"
+            style="font-size: 10px"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <font-awesome-icon icon="fa-info-circle" class=""></font-awesome-icon>
+          </button>
+          <ul class="dropdown-menu">
+            <li v-for="item in errors" :key="item" class="dropdown-item my-0 py-0">
+              <font-awesome-icon icon="fa-info" class="text-warning me-2"></font-awesome-icon>
+              {{ item[0] }}
+            </li>
+          </ul>
+        </div>
+      </div>
+
       <div class="col-md-12">
         <div class="text-end">
           <router-link :to="{ name: 'home' }" v-if="status == 'ots'">
@@ -149,7 +169,7 @@
                             name="role"
                             id="teacherRole"
                             v-model="registration.role"
-                            value="teacher"
+                            value="teacher/counsellor"
                             @input="bg_registration = 'teacher.avif'"
                           />
                           <label class="role-label" for="teacherRole"> Teacher </label>
@@ -184,12 +204,7 @@
                     <small class="text-muted">
                       Which school are you from? <span class="text-danger">*</span>
                     </small>
-                    <v-select
-                      v-model="registration.school_id"
-                      :options="['Canada', 'United States']"
-                      placeholder="Select the value"
-                      :on-change="touchField('school_id')"
-                    />
+                    <School :data="registration.school_id" @check="checkComponent"></School>
                     <small class="text-danger error" v-if="shouldShowError('school_id')">
                       {{ validate.school_id.$silentErrors[0]?.$message }}
                     </small>
@@ -198,17 +213,10 @@
                     <small class="text-muted">
                       When do you expect to graduate? <span class="text-danger">*</span>
                     </small>
-                    <input
-                      type="text"
-                      v-model="registration.graduation_year"
-                      class="form-control"
-                      :class="{
-                        'is-invalid': shouldShowError('graduation_year'),
-                        'is-valid':
-                          !shouldShowError('graduation_year') && registration.graduation_year
-                      }"
-                      @input="touchField('graduation_year')"
-                    />
+                    <GraduationYear
+                      :data="registration.graduation_year"
+                      @check="checkComponent"
+                    ></GraduationYear>
                     <small class="text-danger error" v-if="shouldShowError('graduation_year')">
                       {{ validate.graduation_year.$silentErrors[0]?.$message }}
                     </small>
@@ -220,9 +228,12 @@
                     </small>
                     <v-select
                       v-model="registration.scholarship"
-                      :options="['Yes', 'No']"
+                      :options="scholarship_list"
+                      label="label"
+                      :reduce="(scholarship_list) => scholarship_list.value"
                       placeholder="Select the value"
-                      :on-change="touchField('scholarship')"
+                      @option:selected="touchField('scholarship')"
+                      :clearable="false"
                     />
                     <small class="text-danger error" v-if="shouldShowError('scholarship')">
                       {{ validate.scholarship.$silentErrors[0]?.$message }}
@@ -233,12 +244,10 @@
                       Which country are you thinking of studying in?
                       <span class="text-danger">*</span>
                     </small>
-                    <v-select
-                      v-model="registration.destination_country"
-                      :options="['Yes', 'No']"
-                      placeholder="Select the value"
-                      :on-change="touchField('destination_country')"
-                    />
+                    <Country
+                      :data="registration.destination_country"
+                      @check="checkComponent"
+                    ></Country>
                     <small class="text-danger error" v-if="shouldShowError('destination_country')">
                       {{ validate.destination_country.$silentErrors[0]?.$message }}
                     </small>
@@ -328,46 +337,37 @@
                         <small class="text-muted">
                           What school does your child go to? <span class="text-danger">*</span>
                         </small>
-                        <v-select
-                          v-model="registration.school_id"
-                          :options="['Canada', 'United States']"
-                          placeholder="Select the value"
-                          :on-change="touchField('school_id')"
-                        />
+                        <School :data="registration.school_id" @check="checkComponent"></School>
                         <small class="text-danger error" v-if="shouldShowError('school_id')">
                           {{ validate.school_id.$silentErrors[0]?.$message }}
                         </small>
                       </div>
-                      <div class="col-md-12">
+                      <div class="col-md-6">
                         <small class="text-muted">
                           When do you expect your child to graduate?
                           <span class="text-danger">*</span>
                         </small>
-                        <input
-                          type="text"
-                          v-model="registration.graduation_year"
-                          class="form-control"
-                          :class="{
-                            'is-invalid': shouldShowError('graduation_year'),
-                            'is-valid':
-                              !shouldShowError('graduation_year') && registration.graduation_year
-                          }"
-                          @input="touchField('graduation_year')"
-                        />
+                        <GraduationYear
+                          :data="registration.graduation_year"
+                          @check="checkComponent"
+                        ></GraduationYear>
                         <small class="text-danger error" v-if="shouldShowError('graduation_year')">
                           {{ validate.graduation_year.$silentErrors[0]?.$message }}
                         </small>
                       </div>
-                      <div class="col-md-12">
+                      <div class="col-md-6">
                         <small class="text-muted">
                           Are your child eligible for a need-based scholarship?
                           <span class="text-danger">*</span>
                         </small>
                         <v-select
                           v-model="registration.scholarship"
-                          :options="['Yes', 'No']"
+                          :options="scholarship_list"
+                          label="label"
+                          :reduce="(scholarship_list) => scholarship_list.value"
                           placeholder="Select the value"
-                          :on-change="touchField('scholarship')"
+                          @option:selected="touchField('scholarship')"
+                          :clearable="false"
                         />
                         <small class="text-danger error" v-if="shouldShowError('scholarship')">
                           {{ validate.scholarship.$silentErrors[0]?.$message }}
@@ -378,13 +378,10 @@
                           Which country does your child interest in studying abroad?
                           <span class="text-danger">*</span>
                         </small>
-                        <v-select
-                          v-model="registration.destination_country"
-                          :options="['Yes', 'No']"
-                          placeholder="Select the value"
-                          :on-change="touchField('destination_country')"
-                          multiple
-                        />
+                        <Country
+                          :data="registration.destination_country"
+                          @check="checkComponent"
+                        ></Country>
                         <small
                           class="text-danger error"
                           v-if="shouldShowError('destination_country')"
@@ -397,17 +394,12 @@
                 </div>
 
                 <!-- Teacher  -->
-                <div class="row g-3" v-if="registration.role == 'teacher'">
+                <div class="row g-3" v-if="registration.role == 'teacher/counsellor'">
                   <div class="col-md-12">
                     <small class="text-muted">
                       Which school are you from? <span class="text-danger">*</span>
                     </small>
-                    <v-select
-                      v-model="registration.school_id"
-                      :options="['Canada', 'United States']"
-                      placeholder="Select the value"
-                      :on-change="touchField('school_id')"
-                    />
+                    <School :data="registration.school_id" @check="checkComponent"></School>
                     <small class="text-danger error" v-if="shouldShowError('school_id')">
                       {{ validate.school_id.$silentErrors[0]?.$message }}
                     </small>
@@ -420,12 +412,10 @@
                       I know this event from
                       <span class="text-danger">*</span>
                     </small>
-                    <v-select
-                      v-model="registration.lead_source_id"
-                      :options="['Yes', 'No']"
-                      placeholder="Select the value"
-                      :on-change="touchField('lead_source_id')"
-                    />
+                    <LeadSource
+                      :data="registration.lead_source_id"
+                      @check="checkComponent"
+                    ></LeadSource>
                     <small class="text-danger error" v-if="shouldShowError('lead_source_id')">
                       {{ validate.lead_source_id.$silentErrors[0]?.$message }}
                     </small>
@@ -458,6 +448,12 @@
 import { computed, defineComponent, onMounted, ref } from 'vue'
 import { useVuelidate } from '@vuelidate/core'
 import { required, email, minLength } from '@vuelidate/validators'
+import ApiService from '@/services/ApiService'
+import School from '../component/School.vue'
+import LeadSource from '../component/LeadSource.vue'
+import Country from '../component/Country.vue'
+import GraduationYear from '../component/GraduationYear.vue'
+
 export default defineComponent({
   name: 'form-event',
   props: {
@@ -467,9 +463,15 @@ export default defineComponent({
     status: String,
     attendStatus: String
   },
+  components: {
+    School,
+    LeadSource,
+    Country,
+    GraduationYear
+  },
   setup(props) {
     const progress = ref(null)
-    const step = ref(1)
+    const step = ref(2)
     const loading = ref(false)
     const bg_registration = ref('bg.jpg')
     const registration = ref({
@@ -494,8 +496,9 @@ export default defineComponent({
       status: '',
       referral: '',
       client_type: '',
-      have_child: true
+      have_child: false
     })
+    const errors = ref()
     const rules = computed(() => ({
       fullname: {
         required,
@@ -538,26 +541,14 @@ export default defineComponent({
       }
     }))
 
-    const school_list = ref()
-    const lead_source_list = ref()
-    const destination_country_list = ref()
+    const scholarship_list = ref([
+      { value: 'Y', label: 'Yes' },
+      { value: 'N', label: 'No' }
+    ])
 
-    const getSchool = (alias = null) => {
-      const endpoint = alias ? '' : ''
-
-      // console.log(endpoint)
-    }
-
-    const getLeadSource = () => {
-      const endpoint = ''
-
-      // console.log(endpoint)
-    }
-
-    const getCountry = () => {
-      const endpoint = ''
-
-      // console.log(endpoint)
+    const checkComponent = (data = null) => {
+      touchField(data?.key)
+      registration.value[data.key] = data?.value
     }
 
     const section_1_rule = ['fullname', 'email', 'phone', 'role']
@@ -615,7 +606,7 @@ export default defineComponent({
               input_array = parent_not_child_rule
             }
             break
-          case 'teacher':
+          case 'teacher/counsellor':
             input_array = teacher_rule
             break
           case 'student':
@@ -678,7 +669,7 @@ export default defineComponent({
           case 'parent':
             bg_registration.value = 'parent.jpg'
             break
-          case 'teacher':
+          case 'teacher/counsellor':
             bg_registration.value = 'teacher.avif'
             break
           case 'student':
@@ -696,7 +687,6 @@ export default defineComponent({
     }
 
     const nextProcess = () => {
-      loading.value = true
       const role = registration.value.role
       var validate = false
 
@@ -709,7 +699,7 @@ export default defineComponent({
           }
           break
 
-        case 'teacher':
+        case 'teacher/counsellor':
           validate = checkingValidation(teacher_rule)
           break
 
@@ -724,14 +714,22 @@ export default defineComponent({
       if (validate) {
         submit()
       }
-
-      setTimeout(() => {
-        loading.value = false
-      }, 1000)
     }
 
-    const submit = () => {
-      console.log(registration.value)
+    const submit = async () => {
+      loading.value = true
+      console.log(registration.value);
+      const endpoint = 'v1/register/event'
+      try {
+        loading.value = false
+        const res = await ApiService.post(endpoint, registration.value)
+        if (!res.success) {
+          errors.value = res.error
+        }
+      } catch (error) {
+        loading.value = false
+        console.error(error)
+      }
     }
 
     const loadGetParameter = () => {
@@ -742,23 +740,20 @@ export default defineComponent({
     }
 
     onMounted(() => {
-      getSchool()
-      getLeadSource()
-      getCountry()
       loadGetParameter()
     })
 
     return {
       step,
       loading,
+      errors,
       progress,
       registration,
-      school_list,
-      lead_source_list,
-      destination_country_list,
+      scholarship_list,
       rules,
       validate,
       bg_registration,
+      checkComponent,
       touchField,
       shouldShowError,
       nextAdditional,
