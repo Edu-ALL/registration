@@ -20,9 +20,11 @@
     "@vuelidate/validators": "^2.0.4",
     "axios": "^1.6.7",
     "bootstrap": "^5.3.2",
+    "html2canvas": "^1.4.1",
     "lodash": "^4.17.21",
     "sweetalert2": "^11.10.5",
     "vue": "^3.3.11",
+    "vue-qrcode": "^2.2.2",
     "vue-router": "^4.2.5",
     "vue-select": "^4.0.0-beta.6",
     "vue3-qr-reader": "^1.0.0"
