@@ -13,9 +13,7 @@
       @option:selected="selectData"
     >
       <template #list-header v-if="school_list?.length == 0">
-        <li class="text-muted text-center">
-          Select the item below to add new a school
-        </li>
+        <li class="text-muted text-center">Select the item below to add new a school</li>
       </template>
     </v-select>
   </div>

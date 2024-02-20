@@ -4,6 +4,7 @@ import { RouterView } from 'vue-router'
 
 <template>
   <div class="container-fluid p-0">
+    <vue3-progress-bar></vue3-progress-bar>
     <router-view v-slot="{ Component }">
       <transition name="fade" mode="out-in">
         <component :is="Component" key="$route.fullPath" />
@@ -20,5 +21,11 @@ import { RouterView } from 'vue-router'
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+
+.vue3-progress-bar {
+  height: 5px !important;
+  background: rgb(29, 5, 109) !important;
+  opacity: .4;
 }
 </style>

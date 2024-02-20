@@ -185,7 +185,7 @@
                   </div>
                 </div>
                 <div class="card-footer d-flex align-items-center justify-content-end">
-                  <button class="btn btn-sm btn-primary rounded-pill" @click="nextAdditional">
+                  <button class="btn btn-sm btn-primary rounded-pill px-3" @click="nextAdditional">
                     {{ loading ? 'Waiting' : 'Next' }}
                     <font-awesome-icon
                       :icon="loading ? 'fa-solid fa-spinner' : 'fa-solid fa-arrow-right'"
@@ -444,11 +444,11 @@
                   </div>
                 </div>
                 <div class="card-footer d-flex align-items-center justify-content-between">
-                  <button class="btn btn-sm btn-warning rounded-pill" @click="step = 1">
+                  <button class="btn btn-sm btn-warning rounded-pill px-3" @click="step = 1">
                     <font-awesome-icon icon="fa-solid fa-arrow-left" class="me-2" />
                     Back
                   </button>
-                  <button class="btn btn-sm btn-primary rounded-pill" @click="nextProcess">
+                  <button class="btn btn-sm btn-primary rounded-pill px-3" @click="nextProcess">
                     {{ loading ? 'Waiting' : 'Submit' }}
                     <font-awesome-icon
                       :icon="loading ? 'fa-solid fa-spinner' : 'fa-solid fa-save'"
@@ -496,7 +496,7 @@ export default defineComponent({
   },
   setup(props) {
     const progress = ref(null)
-    const step = ref(2)
+    const step = ref(1)
     const loading = ref(false)
     const bg_registration = ref('bg.jpg')
     const registration = ref({
@@ -575,8 +575,6 @@ export default defineComponent({
       touchField(data?.key)
       registration.value[data.key] = data?.value
       checkProgress()
-
-      console.log(registration.value);
     }
 
     const newData = (data) => {
@@ -708,6 +706,8 @@ export default defineComponent({
     }
 
     const nextAdditional = () => {
+      checkProgress();
+
       loading.value = true
       const check = checkingValidation(section_1_rule)
       if (check) {
@@ -725,12 +725,12 @@ export default defineComponent({
 
           default:
             break
-        }
+          }
       }
 
       setTimeout(() => {
         loading.value = false
-      }, 1000)
+      }, 500)
     }
 
     const nextProcess = () => {
@@ -815,33 +815,33 @@ export default defineComponent({
 
     const loadGetParameter = () => {
       registration.value.event_id = props?.eventId
-      registration.value.event_type = props.eventType ? props?.eventType : 'Embed'
+      registration.value.event_type = props.eventType ? props?.eventType : null
       registration.value.status = props.status ? props?.status?.toUpperCase() : 'PR'
-      registration.value.attend_status = props.attendStatus ? props?.attendStatus : 'Join'
+      registration.value.attend_status = props.attendStatus ? props?.attendStatus : null
     }
 
     const reset = () => {
-      ;(registration.value.role = 'student'),
-        (registration.value.fullname = ''),
-        (registration.value.mail = ''),
-        (registration.value.phone = ''),
-        (registration.value.secondary_name = ''),
-        (registration.value.secondary_email = ''),
-        (registration.value.secondary_phone = ''),
-        (registration.value.school_id = ''),
-        (registration.value.other_school = ''),
-        (registration.value.graduation_year = ''),
-        (registration.value.destination_country = []),
-        (registration.value.scholarship = 'N'),
-        (registration.value.lead_source_id = ''),
-        (registration.value.event_id = ''),
-        (registration.value.attend_status = ''),
-        (registration.value.attend_party = ''),
-        (registration.value.event_type = ''),
-        (registration.value.status = 'PR'),
-        (registration.value.referral = ''),
-        (registration.value.client_type = ''),
-        (registration.value.have_child = false)
+      registration.value.role = 'student'
+      registration.value.fullname = ''
+      registration.value.mail = ''
+      registration.value.phone = ''
+      registration.value.secondary_name = ''
+      registration.value.secondary_email = ''
+      registration.value.secondary_phone = ''
+      registration.value.school_id = ''
+      registration.value.other_school = ''
+      registration.value.graduation_year = ''
+      registration.value.destination_country = []
+      registration.value.scholarship = 'N'
+      registration.value.lead_source_id = ''
+      registration.value.event_id = ''
+      registration.value.attend_status = ''
+      registration.value.attend_party = ''
+      registration.value.event_type = ''
+      registration.value.status = 'PR'
+      registration.value.referral = ''
+      registration.value.client_type = ''
+      registration.value.have_child = false
     }
 
     onMounted(() => {

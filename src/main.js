@@ -3,6 +3,7 @@ import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'vue-select/dist/vue-select.css'
 import { Tooltip } from 'bootstrap'
+import "@marcoschulte/vue3-progress/dist/index.css";
 
 import { createApp } from 'vue'
 import App from './App.vue'
@@ -10,6 +11,7 @@ import router from './router'
 import vSelect from 'vue-select'
 import QrReader from 'vue3-qr-reader'
 import VueQrcode from 'vue-qrcode'
+import { Vue3ProgressPlugin } from '@marcoschulte/vue3-progress'
 
 /* import the fontawesome core */
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -34,6 +36,7 @@ app.directive('tooltip', {
 
 app.use(router)
 app.use(QrReader)
+app.use(Vue3ProgressPlugin)
 app.component('vue-qrcode', VueQrcode)
 app.component('font-awesome-icon', FontAwesomeIcon)
 app.component('v-select', vSelect)
