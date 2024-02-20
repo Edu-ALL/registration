@@ -1,5 +1,12 @@
+#registration {
+    background: url('/public/img/bg-regist.jpg');
+    background-size: cover;
+    background-position: center;
+    margin: 0;
+    padding: 0;
+}
+
 .bg-form {
-    /* background: url('/public/img/bg.jpg'); */
     background-repeat: no-repeat !important;
     background-position: bottom center !important;
     background-size: cover !important;

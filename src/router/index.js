@@ -28,11 +28,10 @@ const router = createRouter({
       component: () => import('@/views/event/Scan.vue')
     },
     {
-      path: '/thanks/event/:type/:id',
+      path: '/thanks/event/:type',
       name: 'thanks-event',
       props: (route) => ({
         type: route.params.type, //pra_reg or ots
-        id: route.params.id // Menggunakan props untuk mendapatkan parameter
       }),
       component: () => import('@/views/event/Thanks.vue')
     },

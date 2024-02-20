@@ -26,7 +26,7 @@ export default defineComponent({
     const setupGraduation = () => {
       const currentYear = new Date().getFullYear()
       const data = []
-      for (let i = currentYear - 5; i <= currentYear + 10; i++) {
+      for (let i = currentYear - 3; i <= currentYear + 10; i++) {
         data.push(i.toString())
       }
       graduation_list.value = data

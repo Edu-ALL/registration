@@ -46,7 +46,7 @@ export default defineComponent({
           name: 'event',
           query: {
             form_type: 'cta',
-            event_id: '12345',
+            event_id: 'EVT-0001',
             event_type: 'offline',
             attend_status: 'attend',
             status: 'ots'

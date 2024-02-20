@@ -5,6 +5,7 @@ export const showNotif = (status, message) => {
     toast: true,
     position: 'top-end',
     showConfirmButton: false,
+    width: '400px',
     timer: 3000,
     timerProgressBar: true,
     didOpen: (toast) => {
