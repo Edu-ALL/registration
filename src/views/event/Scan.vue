@@ -210,6 +210,8 @@ export default defineComponent({
   setup(props) {
     const scan = ref(true)
     const phone_number = ref()
+    const event_id = ref()
+    const is_vip = ref()
     const registration = ref({
       role: 'student',
       fullname: '',
@@ -235,7 +237,6 @@ export default defineComponent({
     })
 
     const onDecode = async (value) => {
-      console.log(value);
       const progress = useProgress().start()
       if (value) {
         const endpoint = 'v1/client-event/TKT/' + value
@@ -271,6 +272,9 @@ export default defineComponent({
 
     const restructureData = (data) => {
       const role = data.role == 'teacher/counsellor' ? 'teacher' : data.role
+      is_vip.value = data.is_vip
+      event_id.value = data.joined_event?.clientevent_id
+
       registration.value.role = data.role
       registration.value.fullname = data[role]?.name
       registration.value.mail = data[role]?.mail
@@ -292,14 +296,29 @@ export default defineComponent({
       registration.value.scholarship = data?.scholarship ? data?.scholarship : 'N'
       registration.value.lead_source_id = data?.lead?.lead_id
       registration.value.event_id = data?.joined_event?.event_id
-      registration.value.attend_status = data?.joined_event?.attend_status
+      registration.value.attend_status = data?.joined_event?.attend_status == 1 ? 'attend' : null
       registration.value.attend_party = data?.joined_event?.attend_party
       registration.value.event_type = data?.joined_event?.event_type
       registration.value.status = data?.joined_event?.status
       registration.value.referral = data?.joined_event?.referral
       registration.value.client_type = data?.joined_event?.client_type
-      registration.value.have_child =
-        data.role == 'parent' && data['student']?.secondary_name ? true : false
+      registration.value.have_child = data.role == 'parent' && data['student']?.name ? true : false
+    }
+
+    const submit = async () => {
+      console.log(registration.value)
+      const progress = useProgress().start()
+      const endpoint = 'v1/registration/verify/' + event_id.value
+      try {
+        const res = await ApiService.patch(endpoint, registration.value)
+        console.log(res)
+        // if (res.success) {
+        // }
+        progress.finish()
+      } catch (error) {
+        console.error(error)
+        progress.finish()
+      }
     }
 
     onMounted(() => {
@@ -308,11 +327,14 @@ export default defineComponent({
 
     return {
       scan,
+      event_id,
+      is_vip,
       phone_number,
       registration,
       onDecode,
       checkPhone,
-      restructureData
+      restructureData,
+      submit
     }
   }
 })

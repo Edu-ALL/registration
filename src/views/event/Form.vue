@@ -51,7 +51,7 @@
                     style="background: #251b815b"
                   >
                     <h5 class="text-white text-center px-3">
-                      {{ event?.event_title }}
+                      {{ event?.event_name }}
                     </h5>
                   </div>
                 </div>
@@ -77,7 +77,13 @@
                 <div class="card-body" :class="{ 'registration-card': formType == 'cta' }">
                   <div class="row g-3">
                     <div class="col-md-4">
-                      <small class="text-muted">
+                      <small class="text-muted label">
+                        <box-icon
+                          name="user-rectangle"
+                          type="solid"
+                          size="xs"
+                          color="#797575"
+                        ></box-icon>
                         Full Name <span class="text-danger">*</span>
                       </small>
                       <input
@@ -91,11 +97,22 @@
                         @input="touchField('fullname')"
                       />
                       <small class="text-danger error" v-if="shouldShowError('fullname')">
+                        <box-icon
+                          name="info-circle"
+                          animation="tada"
+                          size="12px"
+                          color="#d21414"
+                          className="me-1"
+                        ></box-icon>
                         {{ validate.fullname.$silentErrors[0]?.$message }}
                       </small>
                     </div>
                     <div class="col-md-4">
-                      <small class="text-muted"> Email <span class="text-danger">*</span> </small>
+                      <small class="text-muted label">
+                        <box-icon name="envelope" size="xs" color="#797575"></box-icon>
+
+                        Email <span class="text-danger">*</span>
+                      </small>
                       <input
                         type="email"
                         v-model="registration.mail"
@@ -107,11 +124,21 @@
                         @input="touchField('mail')"
                       />
                       <small class="text-danger error" v-if="shouldShowError('mail')">
+                        <box-icon
+                          name="info-circle"
+                          animation="tada"
+                          size="12px"
+                          color="#d21414"
+                          className="me-1"
+                        ></box-icon>
                         {{ validate.mail.$silentErrors[0]?.$message }}
                       </small>
                     </div>
                     <div class="col-md-4">
-                      <small class="text-muted"> Phone <span class="text-danger">*</span> </small>
+                      <small class="text-muted label">
+                        <box-icon name="mobile" size="xs" color="#797575"></box-icon>
+                        Phone <span class="text-danger">*</span>
+                      </small>
                       <input
                         type="tel"
                         v-model="registration.phone"
@@ -123,6 +150,13 @@
                         @input="touchField('phone')"
                       />
                       <small class="text-danger error" v-if="shouldShowError('phone')">
+                        <box-icon
+                          name="info-circle"
+                          animation="tada"
+                          size="12px"
+                          color="#d21414"
+                          className="me-1"
+                        ></box-icon>
                         {{ validate.phone.$silentErrors[0]?.$message }}
                       </small>
                     </div>
@@ -132,6 +166,13 @@
                         <span class="text-danger">*</span>
                       </label>
                       <small class="text-danger error" v-if="shouldShowError('role')">
+                        <box-icon
+                          name="info-circle"
+                          animation="tada"
+                          size="12px"
+                          color="#d21414"
+                          className="me-1"
+                        ></box-icon>
                         {{ validate.role.$silentErrors[0]?.$message }}
                       </small>
                       <div class="row g-3">
@@ -200,13 +241,17 @@
               <div class="card shadow" v-if="step == 2">
                 <div class="p-3 d-flex align-items-center justify-content-between">
                   <h3 class="my-0">Let us know you better!</h3>
-                  <small class="text-muted">Page {{ step }} of 2</small>
+                  <small class="text-muted label">
+                    <box-icon name="right-arrow-alt" size="xs" color="#797575"></box-icon>
+                    Page {{ step }} of 2</small
+                  >
                 </div>
                 <div class="card-body" :class="{ 'registration-card': formType == 'cta' }">
                   <!-- Student  -->
                   <div class="row g-3" v-if="registration.role == 'student'">
                     <div class="col-md-12">
-                      <small class="text-muted">
+                      <small class="text-muted label">
+                        <box-icon name="school" type="solid" size="xs" color="#797575"></box-icon>
                         Which school are you from? <span class="text-danger">*</span>
                       </small>
                       <School
@@ -215,11 +260,24 @@
                         @new="newData"
                       ></School>
                       <small class="text-danger error" v-if="shouldShowError('school_id')">
+                        <box-icon
+                          name="info-circle"
+                          animation="tada"
+                          size="12px"
+                          color="#d21414"
+                          className="me-1"
+                        ></box-icon>
                         {{ validate.school_id.$silentErrors[0]?.$message }}
                       </small>
                     </div>
                     <div class="col-md-12">
-                      <small class="text-muted">
+                      <small class="text-muted label">
+                        <box-icon
+                          name="graduation"
+                          type="solid"
+                          size="xs"
+                          color="#797575"
+                        ></box-icon>
                         When do you expect to graduate high school?
                         <span class="text-danger">*</span>
                       </small>
@@ -228,11 +286,19 @@
                         @check="checkComponent"
                       ></GraduationYear>
                       <small class="text-danger error" v-if="shouldShowError('graduation_year')">
+                        <box-icon
+                          name="info-circle"
+                          animation="tada"
+                          size="12px"
+                          color="#d21414"
+                          className="me-1"
+                        ></box-icon>
                         {{ validate.graduation_year.$silentErrors[0]?.$message }}
                       </small>
                     </div>
                     <div class="col-md-12">
-                      <small class="text-muted">
+                      <small class="text-muted label">
+                        <box-icon name="flag-alt" type="solid" size="xs" color="#797575"></box-icon>
                         Which country are you thinking of studying in?
                         <span class="text-danger">*</span>
                       </small>
@@ -254,7 +320,8 @@
                     <div class="col-md-12">
                       <div class="row">
                         <div class="col-9">
-                          <small class="text-muted">
+                          <small class="text-muted label">
+                            <box-icon name="child" size="15px" color="#797575"></box-icon>
                             <strong>Do you have a child?</strong>
                           </small>
                         </div>
@@ -276,7 +343,8 @@
                     <div class="col-md-12" v-if="registration.have_child">
                       <div class="row g-3">
                         <div class="col-md-4">
-                          <small class="text-muted">
+                          <small class="text-muted label">
+                            <box-icon name="user" size="xs" color="#797575"></box-icon>
                             Your child fullname? <span class="text-danger">*</span>
                           </small>
                           <input
@@ -291,11 +359,21 @@
                             @input="touchField('secondary_name')"
                           />
                           <small class="text-danger error" v-if="shouldShowError('secondary_name')">
+                            <box-icon
+                              name="info-circle"
+                              animation="tada"
+                              size="12px"
+                              color="#d21414"
+                              className="me-1"
+                            ></box-icon>
                             {{ validate.secondary_name.$silentErrors[0]?.$message }}
                           </small>
                         </div>
                         <div class="col-md-4">
-                          <small class="text-muted"> Your child email? </small>
+                          <small class="text-muted label">
+                            <box-icon name="envelope" size="xs" color="#797575"></box-icon>
+                            Your child email?
+                          </small>
                           <input
                             type="text"
                             v-model="registration.secondary_email"
@@ -315,7 +393,10 @@
                           </small>
                         </div>
                         <div class="col-md-4">
-                          <small class="text-muted"> Your child number? </small>
+                          <small class="text-muted label">
+                            <box-icon name="phone" size="xs" color="#797575"></box-icon>
+                            Your child number?
+                          </small>
                           <input
                             type="tel"
                             v-model="registration.secondary_phone"
@@ -335,7 +416,13 @@
                           </small>
                         </div>
                         <div class="col-md-12">
-                          <small class="text-muted">
+                          <small class="text-muted label">
+                            <box-icon
+                              name="school"
+                              type="solid"
+                              size="xs"
+                              color="#797575"
+                            ></box-icon>
                             What school does your child go to? <span class="text-danger">*</span>
                           </small>
                           <School
@@ -344,11 +431,24 @@
                             @new="newData"
                           ></School>
                           <small class="text-danger error" v-if="shouldShowError('school_id')">
+                            <box-icon
+                              name="info-circle"
+                              animation="tada"
+                              size="12px"
+                              color="#d21414"
+                              className="me-1"
+                            ></box-icon>
                             {{ validate.school_id.$silentErrors[0]?.$message }}
                           </small>
                         </div>
                         <div class="col-md-12">
-                          <small class="text-muted">
+                          <small class="text-muted label">
+                            <box-icon
+                              name="graduation"
+                              type="solid"
+                              size="xs"
+                              color="#797575"
+                            ></box-icon>
                             When do you expect your child to graduate high school?
                             <span class="text-danger">*</span>
                           </small>
@@ -364,7 +464,13 @@
                           </small>
                         </div>
                         <div class="col-md-12">
-                          <small class="text-muted">
+                          <small class="text-muted label">
+                            <box-icon
+                              name="flag-alt"
+                              type="solid"
+                              size="xs"
+                              color="#797575"
+                            ></box-icon>
                             Which country does your child interest in studying abroad?
                             <span class="text-danger">*</span>
                           </small>
@@ -386,7 +492,8 @@
                   <!-- Teacher  -->
                   <div class="row g-3" v-if="registration.role == 'teacher/counsellor'">
                     <div class="col-md-12">
-                      <small class="text-muted">
+                      <small class="text-muted label">
+                        <box-icon name="school" type="solid" size="xs" color="#797575"></box-icon>
                         Which school are you from? <span class="text-danger">*</span>
                       </small>
                       <School
@@ -395,6 +502,13 @@
                         @new="newData"
                       ></School>
                       <small class="text-danger error" v-if="shouldShowError('school_id')">
+                        <box-icon
+                          name="info-circle"
+                          animation="tada"
+                          size="12px"
+                          color="#d21414"
+                          className="me-1"
+                        ></box-icon>
                         {{ validate.school_id.$silentErrors[0]?.$message }}
                       </small>
                     </div>
@@ -402,7 +516,8 @@
 
                   <div class="row mt-3">
                     <div :class="status == 'ots' ? 'col-md-9' : 'col-md-12'">
-                      <small class="text-muted">
+                      <small class="text-muted label">
+                        <box-icon name="link" size="xs" color="#797575"></box-icon>
                         I know this event from
                         <span class="text-danger">*</span>
                       </small>
@@ -411,11 +526,19 @@
                         @check="checkComponent"
                       ></LeadSource>
                       <small class="text-danger error" v-if="shouldShowError('lead_source_id')">
+                        <box-icon
+                          name="info-circle"
+                          animation="tada"
+                          size="12px"
+                          color="#d21414"
+                          className="me-1"
+                        ></box-icon>
                         {{ validate.lead_source_id.$silentErrors[0]?.$message }}
                       </small>
                     </div>
                     <div class="col-md-3" v-if="status == 'ots'">
-                      <small class="text-muted">
+                      <small class="text-muted label">
+                        <box-icon name="group" type="solid" size="xs" color="#797575"></box-icon>
                         Number of Party
                         <span class="text-danger">*</span>
                       </small>
@@ -487,7 +610,7 @@ export default defineComponent({
     const loading = ref(false)
     const bg_registration = ref('bg.jpg')
     const registration = ref({
-      role: 'teacher/counsellor',
+      role: 'student',
       fullname: '',
       mail: '',
       phone: '',

@@ -6,6 +6,27 @@
     padding: 0;
 }
 
+small.label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+small.text-danger.error {
+    display: flex;
+    align-items: center;
+    padding-top: 10px;
+}
+
+small.error box-icon {
+    padding-bottom: 15px;
+}
+
+small.label box-icon {
+    margin-bottom: 9px;
+    margin-right: 5px;
+}
+
 .vs__search, .vs__search:focus {
     padding: 1px 8px !important;
 }
@@ -47,6 +68,7 @@
 .registration-card::-webkit-scrollbar {
     width: 5px !important;
 }
+
 .vs__dropdown-menu::-webkit-scrollbar-thumb,
 .registration-card::-webkit-scrollbar-thumb {
     background-color: #3498db !important;
@@ -148,16 +170,16 @@ small.error {
     .role-input:checked~.role-label {
         height: 100px;
     }
-    
+
     .role img {
         height: 100px;
     }
-    
+
     .role:hover>.role-label {
         height: 100px;
     }
-    
-    
+
+
     .role-label {
         height: 35px;
     }

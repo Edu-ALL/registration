@@ -1,9 +1,10 @@
-import './assets/form.css'
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'vue-select/dist/vue-select.css'
 import { Tooltip } from 'bootstrap'
 import "@marcoschulte/vue3-progress/dist/index.css";
+import "boxicons"
+import './assets/form.css'
 
 import { createApp } from 'vue'
 import App from './App.vue'
