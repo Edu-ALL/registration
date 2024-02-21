@@ -14,11 +14,12 @@ const router = createRouter({
       name: 'event',
       props: (route) => ({
         // Menggunakan props untuk mendapatkan parameter
-        formType: route.query.form_type,
-        eventId: route.query.event_id,
-        eventType: route.query.event_type,
-        attendStatus: route.query.attend_status,
-        status: route.query.status
+        formType: route.query.ft,
+        eventId: route.query.ev,
+        eventType: route.query.et,
+        attendStatus: route.query.as,
+        status: route.query.s,
+        type: route.query.t
       }),
       component: () => import('@/views/event/Form.vue')
     },
@@ -31,10 +32,11 @@ const router = createRouter({
       component: () => import('@/views/event/Scan.vue')
     },
     {
-      path: '/thanks/event/:type',
+      path: '/thanks/event/:status/:type',
       name: 'thanks-event',
       props: (route) => ({
-        type: route.params.type, //pra_reg or ots
+        status: route.params.status, // pra-reg or ots
+        type: route.params.type, // onsite or self
       }),
       component: () => import('@/views/event/Thanks.vue')
     },

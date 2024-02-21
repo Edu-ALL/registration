@@ -24,7 +24,7 @@
 
         <div class="col-md-12">
           <div class="text-end">
-            <router-link :to="{ name: 'home' }" v-if="status == 'ots'">
+            <router-link :to="{ name: 'home' }" v-if="status == 'ots' && type == 'onsite'">
               <div class="btn btn-sm btn-outline-primary mb-2">
                 <font-awesome-icon icon="fa-home" class="me-2"></font-awesome-icon> Back to Home
               </div>
@@ -220,7 +220,8 @@
                     </div>
                     <div class="col-md-12">
                       <small class="text-muted">
-                        When do you expect to graduate? <span class="text-danger">*</span>
+                        When do you expect to graduate high school?
+                        <span class="text-danger">*</span>
                       </small>
                       <GraduationYear
                         :data="registration.graduation_year"
@@ -228,24 +229,6 @@
                       ></GraduationYear>
                       <small class="text-danger error" v-if="shouldShowError('graduation_year')">
                         {{ validate.graduation_year.$silentErrors[0]?.$message }}
-                      </small>
-                    </div>
-                    <div class="col-md-12">
-                      <small class="text-muted">
-                        Are you eligible for a need-based scholarship?
-                        <span class="text-danger">*</span>
-                      </small>
-                      <v-select
-                        v-model="registration.scholarship"
-                        :options="scholarship_list"
-                        label="label"
-                        :reduce="(scholarship_list) => scholarship_list.value"
-                        placeholder="Select the value"
-                        @option:selected="touchField('scholarship')"
-                        :clearable="false"
-                      />
-                      <small class="text-danger error" v-if="shouldShowError('scholarship')">
-                        {{ validate.scholarship.$silentErrors[0]?.$message }}
                       </small>
                     </div>
                     <div class="col-md-12">
@@ -272,7 +255,7 @@
                       <div class="row">
                         <div class="col-9">
                           <small class="text-muted">
-                            <strong> Have you already child? </strong>
+                            <strong>Do you have a child?</strong>
                           </small>
                         </div>
                         <div class="col-3 d-flex justify-content-end">
@@ -355,14 +338,18 @@
                           <small class="text-muted">
                             What school does your child go to? <span class="text-danger">*</span>
                           </small>
-                          <School :data="registration.school_id" @check="checkComponent"></School>
+                          <School
+                            :data="registration.school_id"
+                            @check="checkComponent"
+                            @new="newData"
+                          ></School>
                           <small class="text-danger error" v-if="shouldShowError('school_id')">
                             {{ validate.school_id.$silentErrors[0]?.$message }}
                           </small>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                           <small class="text-muted">
-                            When do you expect your child to graduate?
+                            When do you expect your child to graduate high school?
                             <span class="text-danger">*</span>
                           </small>
                           <GraduationYear
@@ -374,24 +361,6 @@
                             v-if="shouldShowError('graduation_year')"
                           >
                             {{ validate.graduation_year.$silentErrors[0]?.$message }}
-                          </small>
-                        </div>
-                        <div class="col-md-6">
-                          <small class="text-muted">
-                            Are your child eligible for a need-based scholarship?
-                            <span class="text-danger">*</span>
-                          </small>
-                          <v-select
-                            v-model="registration.scholarship"
-                            :options="scholarship_list"
-                            label="label"
-                            :reduce="(scholarship_list) => scholarship_list.value"
-                            placeholder="Select the value"
-                            @option:selected="touchField('scholarship')"
-                            :clearable="false"
-                          />
-                          <small class="text-danger error" v-if="shouldShowError('scholarship')">
-                            {{ validate.scholarship.$silentErrors[0]?.$message }}
                           </small>
                         </div>
                         <div class="col-md-12">
@@ -420,7 +389,11 @@
                       <small class="text-muted">
                         Which school are you from? <span class="text-danger">*</span>
                       </small>
-                      <School :data="registration.school_id" @check="checkComponent"></School>
+                      <School
+                        :data="registration.school_id"
+                        @check="checkComponent"
+                        @new="newData"
+                      ></School>
                       <small class="text-danger error" v-if="shouldShowError('school_id')">
                         {{ validate.school_id.$silentErrors[0]?.$message }}
                       </small>
@@ -428,7 +401,7 @@
                   </div>
 
                   <div class="row mt-3">
-                    <div class="col-md-12">
+                    <div :class="status == 'ots' ? 'col-md-9' : 'col-md-12'">
                       <small class="text-muted">
                         I know this event from
                         <span class="text-danger">*</span>
@@ -440,6 +413,19 @@
                       <small class="text-danger error" v-if="shouldShowError('lead_source_id')">
                         {{ validate.lead_source_id.$silentErrors[0]?.$message }}
                       </small>
+                    </div>
+                    <div class="col-md-3" v-if="status == 'ots'">
+                      <small class="text-muted">
+                        Number of Party
+                        <span class="text-danger">*</span>
+                      </small>
+                      <input
+                        type="number"
+                        min="1"
+                        max="5"
+                        v-model="registration.attend_party"
+                        class="form-control"
+                      />
                     </div>
                   </div>
                 </div>
@@ -486,7 +472,8 @@ export default defineComponent({
     eventId: String,
     eventType: String,
     status: String,
-    attendStatus: String
+    attendStatus: String,
+    type: String
   },
   components: {
     School,
@@ -500,7 +487,7 @@ export default defineComponent({
     const loading = ref(false)
     const bg_registration = ref('bg.jpg')
     const registration = ref({
-      role: 'student',
+      role: 'teacher/counsellor',
       fullname: '',
       mail: '',
       phone: '',
@@ -515,7 +502,7 @@ export default defineComponent({
       lead_source_id: '',
       event_id: '',
       attend_status: '',
-      attend_party: '',
+      attend_party: 1,
       event_type: '',
       status: 'PR',
       referral: '',
@@ -575,6 +562,8 @@ export default defineComponent({
       touchField(data?.key)
       registration.value[data.key] = data?.value
       checkProgress()
+
+      console.log(registration.value)
     }
 
     const newData = (data) => {
@@ -706,7 +695,7 @@ export default defineComponent({
     }
 
     const nextAdditional = () => {
-      checkProgress();
+      checkProgress()
 
       loading.value = true
       const check = checkingValidation(section_1_rule)
@@ -725,7 +714,7 @@ export default defineComponent({
 
           default:
             break
-          }
+        }
       }
 
       setTimeout(() => {
@@ -783,7 +772,8 @@ export default defineComponent({
             router.push({
               name: 'thanks-event',
               params: {
-                type: registration.value.status == 'PR' ? 'pra_reg' : 'ots'
+                status: registration.value.status == 'PR' ? 'pra-reg' : 'ots',
+                type: props.type == 'onsite' ? 'onsite' : 'self'
               }
             })
             reset()

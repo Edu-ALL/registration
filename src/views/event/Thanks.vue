@@ -1,34 +1,60 @@
 <template>
   <div class="container">
     <div class="row align-items-center justify-content-center" style="height: 100dvh">
-      <div class="text-center" :class="type == 'pra_reg' ? 'col-md-7' : 'col-md-5'">
+      <div class="text-center" :class="status == 'pra-reg' ? 'col-md-7' : 'col-md-5'">
         <div class="card border-0 shadow">
           <div class="card-body">
             <div class="row align-items-center" v-if="event?.code == 'SCS'">
-              <div :class="type == 'pra_reg' ? 'col-md-8' : 'col-md-12'">
+              <div :class="status == 'pra-reg' ? 'col-md-8' : 'col-md-12'">
                 <img src="/img/check.png" alt="completed" width="10%" class="mb-4" />
                 <h3>Hi, {{ event?.data?.client.name }}</h3>
                 <h4 class="mb-4">
                   <span>
-                    Thank you for {{ type == 'pra_reg' ? 'registering' : 'attending' }} for our
-                    event!
+                    Thank you for {{ status == 'pra-reg' ? 'registering' : 'attending' }} our event!
                   </span>
                 </h4>
 
-                <p v-if="type == 'pra_reg'">
-                  We appreciate your participation. To facilitate your re-registration on the day of
-                  the event, please download and utilize the QR code provided below. <br /><br />
-                  This QR code will streamline the registration process and ensure a smooth check-in
-                  experience for you. We look forward to seeing you at the event!
-                </p>
-                <p v-else>
-                  We appreciate your participation. Please proceed to the initial assessment
-                  application by using your ticket ID or through this link.
-                </p>
+                <!-- Description for Parent / Teacher / Student & Mentee  -->
+                <div
+                  v-if="
+                    event?.data?.client?.register_as == 'parent' ||
+                    event?.data?.client?.register_as == 'teacher/counsellor' ||
+                    (event?.data?.client?.register_as == 'student' && event?.data?.client?.is_vip)
+                  "
+                >
+                  <p v-if="status == 'pra-reg'">
+                    We appreciate your participation. To facilitate your re-registration on the day
+                    of the event, please download and utilize the QR code provided below.
+                    <br /><br />
+                    This QR code will streamline the registration process and ensure a smooth
+                    check-in experience for you. We look forward to seeing you at the event!
+                  </p>
+                  <p v-else>Dive into the event's activities and connect with others.</p>
+                </div>
+
+                <!-- Description for Student & Non Mentee  -->
+                <div
+                  v-if="
+                    event?.data?.client?.register_as == 'student' && !event?.data?.client?.is_vip
+                  "
+                >
+                  <p v-if="status == 'pra-reg'">
+                    We appreciate your participation. To facilitate your re-registration on the day
+                    of the event, please download and utilize the QR code provided below.
+                    <br /><br />
+                    This QR code will streamline the registration process and ensure a smooth
+                    check-in experience for you. We look forward to seeing you at the event!
+                  </p>
+                  <p v-else>
+                    We appreciate your participation. Please proceed to the initial assessment
+                    application by using your ticket ID or through this link.
+                  </p>
+                </div>
               </div>
-              <div :class="type == 'pra_reg' ? 'col-md-4' : 'col-md-12'">
-                <div :class="type == 'pra_reg' ? 'card border-0 shadow' : ''">
-                  <div class="px-3 pt-2 text-end" v-if="type == 'pra_reg'">
+
+              <div :class="status == 'pra-reg' ? 'col-md-4' : 'col-md-12'">
+                <div :class="status == 'pra-reg' ? 'card border-0 shadow' : ''">
+                  <div class="px-3 pt-2 text-end" v-if="status == 'pra-reg'">
                     <button
                       class="btn btn-sm btn-outline-info p-1 py-0"
                       v-tooltip
@@ -41,43 +67,53 @@
                       ></font-awesome-icon>
                     </button>
                   </div>
+
                   <div class="card-body" ref="contentToDownload">
                     <vue-qrcode
                       :value="event?.data?.clientevent.ticket_id"
                       width="200"
                       maskPattern="7"
-                      v-if="type == 'pra_reg'"
+                      v-if="status == 'pra-reg'"
                     />
-                    <div v-if="type == 'ots'" class="mb-3">
-                      <a
-                        href="#"
-                        class="btn btn-sm btn-primary"
-                        @click="goToIA(event?.data?.clientevent.ticket_id)"
-                        >Initial Assessment Now</a
-                      >
-                      <h6 class="mt-2 mb-1">OR</h6>
-                      Visit Initial Assesment
-                      <a href="#" @click="goToIA()"> here </a>
-                      and use your ticket ID
-                    </div>
-                    <small>Ticket ID:</small>
-                    <div class="card border-0 shadow">
-                      <h5 class="text-uppercase py-3 mb-0">
-                        {{ event?.data?.clientevent.ticket_id }}
-                        <font-awesome-icon
-                          icon="fa-copy"
-                          class="cursor-pointer ms-3"
-                          @click="copyToClipboard(event?.data?.clientevent.ticket_id)"
-                          v-if="!copied"
-                        ></font-awesome-icon>
-                        <font-awesome-icon
-                          v-tooltip
-                          data-bs-title="Copied"
-                          icon="fa-check"
-                          class="cursor-pointer ms-3 text-success"
-                          v-else
-                        ></font-awesome-icon>
-                      </h5>
+
+                    <div
+                      v-if="
+                        event?.data?.client?.register_as == 'student' &&
+                        !event?.data?.client?.is_vip
+                      "
+                    >
+                      <div v-if="status == 'ots'" class="mb-3">
+                        <a
+                          href="#"
+                          class="btn btn-sm btn-primary"
+                          @click="goToIA(event?.data?.clientevent.ticket_id)"
+                          >Initial Assessment Now</a
+                        >
+                        <h6 class="mt-2 mb-1">OR</h6>
+                        Visit Initial Assesment
+                        <a href="#" @click="goToIA()"> here </a>
+                        and use your ticket ID
+                      </div>
+
+                      <small>Ticket ID:</small>
+                      <div class="card border-0 shadow">
+                        <h5 class="text-uppercase py-3 mb-0">
+                          {{ event?.data?.clientevent.ticket_id }}
+                          <font-awesome-icon
+                            icon="fa-copy"
+                            class="cursor-pointer ms-3"
+                            @click="copyToClipboard(event?.data?.clientevent.ticket_id)"
+                            v-if="!copied"
+                          ></font-awesome-icon>
+                          <font-awesome-icon
+                            v-tooltip
+                            data-bs-title="Copied"
+                            icon="fa-check"
+                            class="cursor-pointer ms-3 text-success"
+                            v-else
+                          ></font-awesome-icon>
+                        </h5>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -106,9 +142,8 @@ import ClientEventService from '@/services/ClientEventService'
 export default defineComponent({
   name: 'thank-event',
   props: {
-    id: String,
-    type: String,
-    detail: Object
+    status: String,
+    type: String
   },
   setup(props) {
     const event = ref()
@@ -164,10 +199,16 @@ export default defineComponent({
     }
 
     onMounted(() => {
-      if (props.type != 'pra_reg' && props.type != 'ots') {
+      if (props.status != 'pra-reg' && props.status != 'ots') {
         router.push({ name: 'NotFound' })
       }
       event.value = ClientEventService.getClientEvent()
+
+      if (props.type == 'onsite') {
+        setTimeout(() => {
+          router.push({ name: 'home' })
+        }, 5000)
+      }
     })
 
     return {

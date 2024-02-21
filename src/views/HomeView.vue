@@ -50,11 +50,12 @@ export default defineComponent({
         router.push({
           name: 'event',
           query: {
-            form_type: 'cta',
-            event_id: 'EVT-0001',
-            event_type: 'offline',
-            attend_status: 'attend',
-            status: 'ots'
+            ft: 'cta', // cta or null
+            ev: 'evt-0009', // event id
+            et: 'offline', // offline or null
+            as: 'attend', // attent or null
+            s: 'ots', // ots or null
+            t: 'onsite', // onsite or self-regist
           }
         })
       } else {
