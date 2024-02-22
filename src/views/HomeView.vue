@@ -6,14 +6,11 @@
           <h2>Event Name</h2>
         </div>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-4 bg-dark">
         <div class="d-flex align-items-center w-100 h-100 px-5">
           <div class="row g-4">
             <div class="col-12">
-              <div
-                class="card shadow rounded-0 border-0 cursor-pointer"
-                @click="redirect('onsite')"
-              >
+              <div class="card shadow rounded border-0 cursor-pointer" @click="redirect('onsite')">
                 <div class="card-body text-center">
                   <img
                     src="../../public/img/onsite.avif"

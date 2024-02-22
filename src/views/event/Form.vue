@@ -226,7 +226,11 @@
                   </div>
                 </div>
                 <div class="card-footer d-flex align-items-center justify-content-end">
-                  <button class="btn btn-sm btn-primary rounded-pill px-3" @click="nextAdditional">
+                  <button
+                    class="btn btn-sm btn-primary rounded-pill px-3"
+                    @click="nextAdditional"
+                    :disabled="loading"
+                  >
                     {{ loading ? 'Waiting' : 'Next' }}
                     <font-awesome-icon
                       :icon="loading ? 'fa-solid fa-spinner' : 'fa-solid fa-arrow-right'"
@@ -553,11 +557,19 @@
                   </div>
                 </div>
                 <div class="card-footer d-flex align-items-center justify-content-between">
-                  <button class="btn btn-sm btn-warning rounded-pill px-3" @click="step = 1">
+                  <button
+                    class="btn btn-sm btn-warning rounded-pill px-3"
+                    @click="step = 1"
+                    :disabled="loading"
+                  >
                     <font-awesome-icon icon="fa-solid fa-arrow-left" class="me-2" />
                     Back
                   </button>
-                  <button class="btn btn-sm btn-primary rounded-pill px-3" @click="nextProcess">
+                  <button
+                    class="btn btn-sm btn-primary rounded-pill px-3"
+                    @click="nextProcess"
+                    :disabled="loading"
+                  >
                     {{ loading ? 'Waiting' : 'Submit' }}
                     <font-awesome-icon
                       :icon="loading ? 'fa-solid fa-spinner' : 'fa-solid fa-save'"

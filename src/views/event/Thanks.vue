@@ -63,7 +63,8 @@
                     </div>
 
                     <div
-                      class="card-body bg-dark rounded"
+                      class="card-body rounded"
+                      :class="status == 'ots' ? 'bg-primary' : 'bg-dark'"
                       ref="contentToDownload"
                     >
                       <vue-qrcode
@@ -74,6 +75,7 @@
                       />
 
                       <div
+                      class="bg-dark p-4 rounded"
                         v-if="
                           event?.data?.client?.register_as == 'student' &&
                           !event?.data?.client?.is_vip
@@ -84,11 +86,15 @@
                             href="#"
                             class="btn btn-sm bg-secondary rounded-0 pb-2 px-4"
                             @click="goToIA(event?.data?.clientevent.ticket_id)"
-                            >
-                            <box-icon name="rocket" color="#fff" size="15px" class="me-2"></box-icon>
-                            Initial Assessment Now
-                            </a
                           >
+                            <box-icon
+                              name="rocket"
+                              color="#fff"
+                              size="15px"
+                              class="me-2"
+                            ></box-icon>
+                            Initial Assessment Now
+                          </a>
                           <h6 class="mt-2 mb-1">OR</h6>
                           Visit Initial Assesment
                           <a href="#" @click="goToIA()"> here </a>
