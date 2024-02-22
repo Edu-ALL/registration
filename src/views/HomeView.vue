@@ -51,18 +51,18 @@ export default defineComponent({
           name: 'event',
           query: {
             ft: 'cta', // cta or null
-            ev: 'evt-0009', // event id
+            ev: import.meta.env.VITE_EVENT_ID, // event id
             et: 'offline', // offline or null
             as: 'attend', // attent or null
             s: 'ots', // ots or null
-            t: 'onsite', // onsite or self-regist
+            t: 'onsite' // onsite or self-regist
           }
         })
       } else {
         router.push({
           name: 'scan-event',
           params: {
-            id: 'EVT-0001'
+            id: import.meta.env.VITE_EVENT_ID
           }
         })
       }

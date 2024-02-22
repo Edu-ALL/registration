@@ -25,7 +25,7 @@ const router = createRouter({
     },
     {
       path: '/scan/event/vip',
-      name: 'scan-event',
+      name: 'scan-event-vip',
       component: () => import('@/views/event/ScanVIP.vue')
     },
     {

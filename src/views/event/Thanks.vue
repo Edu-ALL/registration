@@ -68,7 +68,7 @@
                     </button>
                   </div>
 
-                  <div class="card-body" ref="contentToDownload">
+                  <div class="card-body" ref="contentToDownload" v-if="status == 'pra-reg'">
                     <vue-qrcode
                       :value="event?.data?.clientevent.ticket_id"
                       width="200"
@@ -201,13 +201,13 @@ export default defineComponent({
     onMounted(() => {
       if (props.status != 'pra-reg' && props.status != 'ots') {
         router.push({ name: 'NotFound' })
-      }
-      event.value = ClientEventService.getClientEvent()
-
-      if (props.type == 'onsite') {
-        setTimeout(() => {
-          router.push({ name: 'home' })
-        }, 5000)
+      } else {
+        if (props.type == 'onsite') {
+          setTimeout(() => {
+            router.push({ name: 'home' })
+          }, 5000)
+          event.value = ClientEventService.getClientEvent()
+        }
       }
     })
 

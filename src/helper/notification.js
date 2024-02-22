@@ -1,9 +1,9 @@
 import Swal from 'sweetalert2'
 
-export const showNotif = (status, message) => {
+export const showNotif = (status, message, position='top-end') => {
   const Toast = Swal.mixin({
     toast: true,
-    position: 'top-end',
+    position: position,
     showConfirmButton: false,
     width: '400px',
     timer: 3000,
