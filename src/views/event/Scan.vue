@@ -32,12 +32,18 @@
               <h5>WITH PHONE NUMBER</h5>
               <div class="card shadow-sm rounded-0 border-0">
                 <div class="card-body">
-                  <input
-                    type="text"
-                    v-model="phone_number"
-                    class="form-control"
-                    @change="checkPhone"
-                  />
+                  <div class="input-group mb-3">
+                    <span class="input-group-text" id="number">
+                      <box-icon name="phone" size="15px" animation="tada" class="pb-2"></box-icon>
+                    </span>
+                    <input
+                      type="text"
+                      class="form-control form-control-sm"
+                      aria-describedby="number"
+                      v-model="phone_number"
+                      @change="checkPhone"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -49,14 +55,22 @@
       <div class="col-md-8">
         <div class="d-flex align-items-center w-100 h-100">
           <div class="card shadow border-0 rounded-0 w-100">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center my-3">
-                <h4 class="m-0">Confirmation</h4>
-                <div class="badge bg-info">
-                  {{ registration.role.toUpperCase() }}
+            <div class="card-header" :class="!is_vip ? 'bg-warning text-white' : ''">
+              <div class="d-flex justify-content-between align-items-center my-0">
+                <h4 class="m-0 d-flex">
+                  <box-icon
+                    name="user-circle"
+                    :color="!is_vip ? '#fff' : '#000'"
+                    class="mt-1 me-2"
+                  ></box-icon>
+                  Confirmation
+                </h4>
+                <div class="d-flex align-items-center">
+                  <h2 class="mb-0" v-if="!is_vip">VIP</h2>
                 </div>
               </div>
-              <hr />
+            </div>
+            <div class="card-body">
               <div class="row align-items-center">
                 <div class="col-md-4 text-center">
                   <img src="/public/img/confirmation.svg" alt="EduALL Confirmation" class="w-75" />
@@ -64,23 +78,50 @@
                 <div class="col-md-8">
                   <div class="row g-3">
                     <div class="col-md-6">
-                      <small class="text-muted">
+                      <small class="text-muted label">
+                        <box-icon
+                          name="user"
+                          size="12px"
+                          className="me-2"
+                          color="#969696"
+                        ></box-icon>
                         Full Name <span class="text-danger">*</span>
                       </small>
                       <input type="text" v-model="registration.fullname" class="form-control" />
                     </div>
                     <div class="col-md-6">
-                      <small class="text-muted"> Email <span class="text-danger">*</span> </small>
+                      <small class="text-muted label">
+                        <box-icon
+                          name="envelope"
+                          size="12px"
+                          className="me-2"
+                          color="#969696"
+                        ></box-icon>
+                        Email <span class="text-danger">*</span>
+                      </small>
                       <input type="email" v-model="registration.mail" class="form-control" />
                     </div>
                     <div class="col-md-6">
-                      <small class="text-muted">
+                      <small class="text-muted label">
+                        <box-icon
+                          name="mobile"
+                          size="12px"
+                          className="me-2"
+                          color="#969696"
+                        ></box-icon>
                         Phone Number <span class="text-danger">*</span>
                       </small>
                       <input type="text" v-model="registration.phone" class="form-control" />
                     </div>
                     <div class="col-md-6" v-if="registration.graduation_year">
-                      <small class="text-muted">
+                      <small class="text-muted label">
+                        <box-icon
+                          name="graduation"
+                          type="solid"
+                          size="12px"
+                          className="me-2"
+                          color="#969696"
+                        ></box-icon>
                         Graduation Year <span class="text-danger">*</span>
                       </small>
                       <GraduationYear
@@ -92,7 +133,14 @@
                     <div class="col-md-12" v-if="registration.have_child">
                       <div class="row">
                         <div class="col-md-4">
-                          <small class="text-muted">
+                          <small class="text-muted label">
+                            <box-icon
+                              name="user"
+                              type="solid"
+                              size="12px"
+                              className="me-2"
+                              color="#969696"
+                            ></box-icon>
                             Child Name <span class="text-danger">*</span>
                           </small>
                           <input
@@ -102,7 +150,14 @@
                           />
                         </div>
                         <div class="col-md-4">
-                          <small class="text-muted">
+                          <small class="text-muted label">
+                            <box-icon
+                              name="envelope"
+                              type="solid"
+                              size="12px"
+                              className="me-2"
+                              color="#969696"
+                            ></box-icon>
                             Child Email <span class="text-danger"></span>
                           </small>
                           <input
@@ -112,7 +167,13 @@
                           />
                         </div>
                         <div class="col-md-4">
-                          <small class="text-muted">
+                          <small class="text-muted label">
+                            <box-icon
+                              name="mobile"
+                              size="12px"
+                              className="me-2"
+                              color="#969696"
+                            ></box-icon>
                             Child Number <span class="text-danger"></span>
                           </small>
                           <input
@@ -125,7 +186,14 @@
                     </div>
 
                     <div class="col-md-12">
-                      <small class="text-muted">
+                      <small class="text-muted label">
+                        <box-icon
+                          name="school"
+                          type="solid"
+                          size="12px"
+                          className="me-2"
+                          color="#969696"
+                        ></box-icon>
                         School Name <span class="text-danger">*</span>
                       </small>
                       <School
@@ -142,7 +210,14 @@
                         registration.role == 'student'
                       "
                     >
-                      <small class="text-muted">
+                      <small class="text-muted label">
+                        <box-icon
+                          name="flag-alt"
+                          type="solid"
+                          size="12px"
+                          className="me-2"
+                          color="#969696"
+                        ></box-icon>
                         Dream University <span class="text-danger">*</span>
                       </small>
                       <Country
@@ -161,7 +236,7 @@
 
                 <div class="d-flex w-75 text-end align-items-end justify-content-end">
                   <div style="width: 100px">
-                    <small class="text-muted">
+                    <small class="text-muted label">
                       Party Number <span class="text-danger">*</span>
                     </small>
                     <input

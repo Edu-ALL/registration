@@ -5,7 +5,7 @@
         <h1 class="display-1">404</h1>
         <h2 class="display-4">Page Not Found</h2>
         <p class="lead">Sorry, the page you're looking for could not be found.</p>
-        <router-link to="/" class="btn btn-primary">Back to Home</router-link>
+        <!-- <router-link to="/" class="btn btn-primary">Back to Home</router-link> -->
       </div>
     </div>
   </div>
