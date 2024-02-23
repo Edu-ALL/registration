@@ -275,7 +275,7 @@ export default defineComponent({
     const onDecode = async (value) => {
       const progress = useProgress().start()
       if (value) {
-        const endpoint = 'v1/client-event/TKT/' + value
+        const endpoint = value
         try {
           const res = await ApiService.get(endpoint)
           if (res.success) {
