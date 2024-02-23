@@ -13,9 +13,6 @@ import vSelect from 'vue-select'
 import QrReader from 'vue3-qr-reader'
 import VueQrcode from 'vue-qrcode'
 import { Vue3ProgressPlugin } from '@marcoschulte/vue3-progress'
-import sourceMapSupport from 'source-map-support';
-
-sourceMapSupport.install();
 
 /* import the fontawesome core */
 import { library } from '@fortawesome/fontawesome-svg-core'
