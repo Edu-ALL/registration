@@ -213,9 +213,9 @@
                 </div>
                 <hr />
                 <div class="d-flex justify-content-between align-items-end mb-3">
-                  <div class="btn btn-outline-warning py-1 px-2" @click="scan = true">
+                  <button class="btn btn-outline-warning py-1 px-2" @click="scan = true" :disabled="loading">
                     <font-awesome-icon icon="fa-arrow-left"></font-awesome-icon> Back to Scan
-                  </div>
+                  </button>
 
                   <div class="d-flex w-75 text-end align-items-end justify-content-end">
                     <div style="width: 100px">
@@ -229,7 +229,7 @@
                         style="font-weight: bold"
                       />
                     </div>
-                    <button class="btn btn-primary ms-2 h-100" @click="submit">
+                    <button class="btn btn-primary ms-2 h-100" @click="submit" :disabled="loading">
                       <font-awesome-icon
                         :icon="loading ? 'fa-solid fa-spinner' : 'fa-solid fa-save'"
                         class="me-2"
@@ -255,6 +255,7 @@ import School from '../component/School.vue'
 import Country from '../component/Country.vue'
 import GraduationYear from '../component/GraduationYear.vue'
 import { useProgress } from '@marcoschulte/vue3-progress'
+import { showNotif } from '@/helper/notification'
 
 export default defineComponent({
   name: 'event-scan',
@@ -265,12 +266,33 @@ export default defineComponent({
   },
   setup() {
     const scan = ref(true)
-    const phone_number = ref()
-    const clientevent_id = ref()
+    const event_id = ref()
     const is_vip = ref()
+    const loading = ref(false)
     const registration = ref({
-      attend_party: ''
+      role: 'student',
+      fullname: '',
+      mail: '',
+      phone: '',
+      secondary_name: '',
+      secondary_email: '',
+      secondary_phone: '',
+      school_id: '',
+      other_school: '',
+      graduation_year: '',
+      destination_country: [],
+      scholarship: 'N',
+      lead_source_id: '',
+      event_id: '',
+      attend_status: '',
+      attend_party: '',
+      event_type: '',
+      status: 'PR',
+      referral: '',
+      client_type: '',
+      have_child: false
     })
+
 
     const onDecode = async (value) => {
       const progress = useProgress().start()
@@ -279,7 +301,7 @@ export default defineComponent({
         try {
           const res = await ApiService.get(endpoint)
           if (res.success) {
-            console.log(res.data)
+            checkingData(res.data)
           }
           progress.finish()
         } catch (error) {
@@ -289,10 +311,51 @@ export default defineComponent({
       }
     }
 
+    const checkingData = (data) => {
+      if (data?.joined_event?.attend_status == 1) {
+        showNotif('warning', 'You have already scanned.', 'bottom-start')
+      } else {
+        scan.value = false
+        const role = data.role == 'teacher/counsellor' ? 'teacher' : data.role
+        is_vip.value = data.is_vip
+        event_id.value = data.joined_event?.clientevent_id
+
+        registration.value.role = data.role
+        registration.value.fullname = data[role]?.name
+        registration.value.mail = data[role]?.mail
+        registration.value.phone = data[role]?.phone
+        registration.value.secondary_name = data.role == 'parent' ? data['student']?.name : null
+        registration.value.secondary_email = data.role == 'parent' ? data['student']?.mail : null
+        registration.value.secondary_phone = data.role == 'parent' ? data['student']?.phone : null
+        registration.value.school_id = data.education?.school_id
+        registration.value.other_school = null
+        registration.value.graduation_year = data.education?.graduation_year
+          ? data.education?.graduation_year
+          : null
+        registration.value.destination_country = []
+        if (data?.dreams_countries) {
+          data?.dreams_countries.forEach((element) => {
+            registration.value.destination_country.push(element.country_id)
+          })
+        }
+        registration.value.scholarship = data?.scholarship ? data?.scholarship : 'N'
+        registration.value.lead_source_id = data?.lead?.lead_id
+        registration.value.event_id = data?.joined_event?.event_id
+        registration.value.attend_status = data?.joined_event?.attend_status == 1 ? 'attend' : null
+        registration.value.attend_party = data?.joined_event?.attend_party
+        registration.value.event_type = data?.joined_event?.event_type
+        registration.value.status = data?.joined_event?.status == 'ots' ? 'OTS' : 'PR'
+        registration.value.referral = data?.joined_event?.referral
+        registration.value.client_type = data?.joined_event?.client_type
+        registration.value.have_child =
+          data.role == 'parent' && data['student']?.name ? true : false
+      }
+    }
+
     const submit = async () => {
       console.log(registration.value)
       const progress = useProgress().start()
-      const endpoint = 'v1/registration/verify/' + clientevent_id.value
+      const endpoint = 'v1/registration/verify/' + event_id.value
       try {
         const res = await ApiService.patch(endpoint, registration.value)
         if (res.success) {
@@ -307,11 +370,12 @@ export default defineComponent({
 
     return {
       scan,
-      clientevent_id,
+      event_id,
       is_vip,
-      phone_number,
+      loading,
       registration,
       onDecode,
+      checkingData,
       submit
     }
   }

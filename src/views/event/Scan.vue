@@ -236,9 +236,9 @@
                 </div>
                 <hr />
                 <div class="d-flex justify-content-between align-items-end mb-3">
-                  <div class="btn btn-outline-warning py-1 px-2" @click="scan = true">
+                  <butoon class="btn btn-outline-warning py-1 px-2" @click="scan = true" :disabled="loading">
                     <font-awesome-icon icon="fa-arrow-left"></font-awesome-icon> Back to Scan
-                  </div>
+                  </butoon>
 
                   <div class="d-flex w-75 text-end align-items-end justify-content-end">
                     <div style="width: 100px">
@@ -252,7 +252,7 @@
                         style="font-weight: bold"
                       />
                     </div>
-                    <button class="btn btn-primary ms-2 h-100" @click="submit">
+                    <button class="btn btn-primary ms-2 h-100" @click="submit" :disabled="loading">
                       <font-awesome-icon
                         :icon="loading ? 'fa-solid fa-spinner' : 'fa-solid fa-save'"
                         class="me-2"
