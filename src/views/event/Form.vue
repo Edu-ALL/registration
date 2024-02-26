@@ -697,8 +697,6 @@ export default defineComponent({
       touchField(data?.key)
       registration.value[data.key] = data?.value
       checkProgress()
-
-      console.log(registration.value)
     }
 
     const newData = (data) => {

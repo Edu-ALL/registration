@@ -24,9 +24,12 @@
                 </h3>
                 <div class="card shadow-sm rounded-0 border-0 mb-3">
                   <div class="card-body">
-                    <div class="p-2">
+                    <div class="p-2" v-if="!qrloading">
                       <qr-stream @decode="onDecode" style="width: 100%" class="rounded">
                       </qr-stream>
+                    </div>
+                    <div class="p-2" v-else>
+                      <box-icon name="loader-circle" animation="spin"></box-icon>
                     </div>
                   </div>
                 </div>
@@ -94,6 +97,16 @@
                           Full Name <span class="text-danger">*</span>
                         </small>
                         <input type="text" v-model="registration.fullname" class="form-control" />
+                        <small class="text-danger error" v-if="error?.fullname">
+                          <box-icon
+                            name="info-circle"
+                            animation="tada"
+                            size="12px"
+                            color="#d21414"
+                            className="me-1"
+                          ></box-icon>
+                          {{ error?.fullname[0] }}
+                        </small>
                       </div>
                       <div class="col-md-6">
                         <small class="text-muted label">
@@ -106,6 +119,16 @@
                           Email <span class="text-danger">*</span>
                         </small>
                         <input type="email" v-model="registration.mail" class="form-control" />
+                        <small class="text-danger error" v-if="error?.mail">
+                          <box-icon
+                            name="info-circle"
+                            animation="tada"
+                            size="12px"
+                            color="#d21414"
+                            className="me-1"
+                          ></box-icon>
+                          {{ error?.mail[0] }}
+                        </small>
                       </div>
                       <div class="col-md-6">
                         <small class="text-muted label">
@@ -118,6 +141,16 @@
                           Phone Number <span class="text-danger">*</span>
                         </small>
                         <input type="text" v-model="registration.phone" class="form-control" />
+                        <small class="text-danger error" v-if="error?.phone">
+                          <box-icon
+                            name="info-circle"
+                            animation="tada"
+                            size="12px"
+                            color="#d21414"
+                            className="me-1"
+                          ></box-icon>
+                          {{ error?.phone[0] }}
+                        </small>
                       </div>
                       <div class="col-md-6" v-if="registration.graduation_year">
                         <small class="text-muted label">
@@ -134,6 +167,16 @@
                           :data="registration.graduation_year"
                           @check="checkComponent"
                         ></GraduationYear>
+                        <small class="text-danger error" v-if="error?.graduation_year">
+                          <box-icon
+                            name="info-circle"
+                            animation="tada"
+                            size="12px"
+                            color="#d21414"
+                            className="me-1"
+                          ></box-icon>
+                          {{ error?.graduation_year[0] }}
+                        </small>
                       </div>
 
                       <div class="col-md-12" v-if="registration.have_child">
@@ -154,6 +197,16 @@
                               v-model="registration.secondary_name"
                               class="form-control"
                             />
+                            <small class="text-danger error" v-if="error?.secondary_name">
+                              <box-icon
+                                name="info-circle"
+                                animation="tada"
+                                size="12px"
+                                color="#d21414"
+                                className="me-1"
+                              ></box-icon>
+                              {{ error?.secondary_name[0] }}
+                            </small>
                           </div>
                           <div class="col-md-4">
                             <small class="text-muted label">
@@ -207,6 +260,16 @@
                           @check="checkComponent"
                           @new="newData"
                         ></School>
+                        <small class="text-danger error" v-if="error?.school_id">
+                          <box-icon
+                            name="info-circle"
+                            animation="tada"
+                            size="12px"
+                            color="#d21414"
+                            className="me-1"
+                          ></box-icon>
+                          {{ error?.school_id[0] }}
+                        </small>
                       </div>
 
                       <div
@@ -230,15 +293,29 @@
                           :data="registration.destination_country"
                           @check="checkComponent"
                         ></Country>
+                        <small class="text-danger error" v-if="error?.destination_country">
+                          <box-icon
+                            name="info-circle"
+                            animation="tada"
+                            size="12px"
+                            color="#d21414"
+                            className="me-1"
+                          ></box-icon>
+                          {{ error?.destination_country[0] }}
+                        </small>
                       </div>
                     </div>
                   </div>
                 </div>
                 <hr />
                 <div class="d-flex justify-content-between align-items-end mb-3">
-                  <butoon class="btn btn-outline-warning py-1 px-2" @click="scan = true" :disabled="loading">
+                  <button
+                    class="btn btn-outline-warning py-1 px-2"
+                    @click="scan = true"
+                    :disabled="loading"
+                  >
                     <font-awesome-icon icon="fa-arrow-left"></font-awesome-icon> Back to Scan
-                  </butoon>
+                  </button>
 
                   <div class="d-flex w-75 text-end align-items-end justify-content-end">
                     <div style="width: 100px">
@@ -298,6 +375,8 @@ export default defineComponent({
     const event_id = ref()
     const is_vip = ref()
     const loading = ref(false)
+    const qrloading = ref(false)
+    const error = ref()
     const registration = ref({
       role: 'student',
       fullname: '',
@@ -330,9 +409,12 @@ export default defineComponent({
           const res = await ApiService.get(endpoint)
           if (res.success) {
             checkingData(res.data)
+          } else {
+            showNotif('error', 'Please try again!', 'bottom-start')
           }
           progress.finish()
         } catch (error) {
+          showNotif('error', 'Please scan the correct QR Code', 'bottom-start')
           console.error(error)
           progress.finish()
         }
@@ -346,9 +428,12 @@ export default defineComponent({
         const res = await ApiService.get(endpoint)
         if (res.success) {
           checkingData(res.data)
+        } else {
+          showNotif('error', 'Please try again!', 'bottom-start')
         }
         progress.finish()
       } catch (error) {
+        showNotif('error', 'Please input the correct phone number', 'bottom-start')
         console.error(error)
         progress.finish()
       }
@@ -396,22 +481,30 @@ export default defineComponent({
     }
 
     const submit = async () => {
+      loading.value = true
       const progress = useProgress().start()
       const endpoint = 'v1/registration/verify/' + event_id.value
       try {
         const res = await ApiService.patch(endpoint, registration.value)
         if (res.success) {
           showNotif('success', res.message, 'bottom-start')
-
           ClientEventService.saveClientEvent(res)
           setTimeout(() => {
             router.push({ name: 'thanks-event', params: { status: 'ots', type: 'onsite' } })
           }, 3000)
         } else {
-          showNotif('error', 'Please try again!', 'bottom-start')
+          error.value = res.error ? res.error : null
+          showNotif(
+            'error',
+            res.message ? res.message : 'Please complete the fields above!',
+            'bottom-start'
+          )
         }
+        loading.value = false
         progress.finish()
       } catch (error) {
+        showNotif('error', 'Please try again!', 'bottom-start')
+        loading.value = false
         console.error(error)
         progress.finish()
       }
@@ -422,7 +515,9 @@ export default defineComponent({
       event_id,
       is_vip,
       loading,
+      qrloading,
       phone_number,
+      error,
       registration,
       onDecode,
       checkPhone,

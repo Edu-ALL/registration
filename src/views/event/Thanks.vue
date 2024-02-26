@@ -43,7 +43,8 @@
                     </p>
                     <p v-else>
                       We appreciate your participation. Please proceed to the initial assessment
-                      application by using your ticket ID or through this link.
+                      application by using your ticket ID or through this
+                      <span v-if="type == 'onsite'"> QR-Code </span> <span v-else> link </span> .
                     </p>
                   </div>
                 </div>
@@ -75,17 +76,24 @@
                       />
 
                       <div
-                      class="bg-dark p-4 rounded"
+                        class="bg-dark p-4 rounded"
                         v-if="
                           event?.data?.client?.register_as == 'student' &&
                           !event?.data?.client?.is_vip
                         "
                       >
                         <div v-if="status == 'ots'" class="mb-3">
+                          <vue-qrcode
+                            :value="event?.data?.clientevent.ticket_id"
+                            width="185"
+                            maskPattern="7"
+                            v-if="type == 'onsite'"
+                          />
                           <a
                             href="#"
                             class="btn btn-sm bg-secondary rounded-0 pb-2 px-4"
                             @click="goToIA(event?.data?.clientevent.ticket_id)"
+                            v-if="type == 'self'"
                           >
                             <box-icon
                               name="rocket"

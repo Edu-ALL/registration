@@ -26,13 +26,16 @@ const router = createRouter({
     {
       path: '/scan/event/vip',
       name: 'scan-event-vip',
+      props: (route) => ({
+        url: route.query.url
+      }),
       component: () => import('@/views/event/ScanVIP.vue')
     },
     {
       path: '/scan/event/:id',
       name: 'scan-event',
       props: (route) => ({
-        eventId: route.params.id,
+        eventId: route.params.id
       }),
       component: () => import('@/views/event/Scan.vue')
     },
@@ -41,7 +44,7 @@ const router = createRouter({
       name: 'thanks-event',
       props: (route) => ({
         status: route.params.status, // pra-reg or ots
-        type: route.params.type, // onsite or self
+        type: route.params.type // onsite or self
       }),
       component: () => import('@/views/event/Thanks.vue')
     },
@@ -55,6 +58,14 @@ const router = createRouter({
       })
     },
 
+    {
+      path: '/error/:slug',
+      name: 'Error',
+      props: (route) => ({
+        slug: route.params.slug
+      }),
+      component: () => import('@/views/error/Error.vue')
+    },
     // Catch-all route for 404 errors
     {
       path: '/:pathMatch(.*)*',
