@@ -1,31 +1,33 @@
 <template>
   <div class="container-fluid">
     <div class="row" style="height: 100dvh">
-      <div class="col-md-8 bg-primary">
-        <div class="d-flex align-items-center w-100 h-100 px-5">
-          <h2>Event Name</h2>
-        </div>
-      </div>
-      <div class="col-md-4 bg-dark">
+      <div
+        class="col-md-9 bg-primary"
+        style="
+          background: url('/img/bg-eduall.webp');
+          background-size: cover;
+          background-position: center;
+        "
+      ></div>
+      <div class="col-md-3">
         <div class="d-flex align-items-center w-100 h-100 px-5">
           <div class="row g-4">
             <div class="col-12">
               <div class="card shadow rounded border-0 cursor-pointer" @click="redirect('onsite')">
                 <div class="card-body text-center">
-                  <img
-                    src="../../public/img/onsite.avif"
-                    alt="Onsite Registration"
-                    class="logo-menu"
-                  />
-                  <h3>Onsite Registration</h3>
+                  <img src="/img/onsite.avif" alt="Onsite Registration" class="logo-menu" />
+                  <h3>
+                    Onsite <br />
+                    Registration
+                  </h3>
                 </div>
               </div>
             </div>
             <div class="col-12">
               <div class="card shadow rounded-0 border-0 cursor-pointer" @click="redirect('scan')">
                 <div class="card-body text-center">
-                  <img src="../../public/img/scan.jpg" alt="Scan QR" class="logo-menu" />
-                  <h3>Scan QR</h3>
+                  <img src="/img/scan.jpg" alt="Scan QR" class="logo-menu" />
+                  <h3>Scan <br />QR Code</h3>
                 </div>
               </div>
             </div>

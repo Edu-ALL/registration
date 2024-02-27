@@ -2,11 +2,14 @@
   <div id="registration">
     <div class="container-fluid">
       <div class="row" style="height: 100dvh" v-if="scan">
-        <div class="col-md-8 bg-primary">
-          <div class="d-flex align-items-center w-100 h-100 px-5">
-            <h2>Event Name</h2>
-          </div>
-        </div>
+        <div
+          class="col-md-8 bg-primary"
+          style="
+            background: url('/img/bg-scan.webp');
+            background-size: cover;
+            background-position: center;
+          "
+        ></div>
         <div class="col-md-4">
           <div class="d-flex align-items-center w-100 h-100 px-5">
             <div class="d-flex align-items-center w-100 h-100">
@@ -78,11 +81,7 @@
               <div class="card-body">
                 <div class="row align-items-center">
                   <div class="col-md-4 text-center">
-                    <img
-                      src="/public/img/confirmation.svg"
-                      alt="EduALL Confirmation"
-                      class="w-75"
-                    />
+                    <img src="/img/confirmation.svg" alt="EduALL Confirmation" class="w-75" />
                   </div>
                   <div class="col-md-8">
                     <div class="row g-3">
@@ -402,6 +401,7 @@ export default defineComponent({
     })
 
     const onDecode = async (value) => {
+      qrloading.value = true
       const progress = useProgress().start()
       if (value) {
         const endpoint = 'v1/client-event/TKT/' + value
@@ -411,9 +411,12 @@ export default defineComponent({
             checkingData(res.data)
           } else {
             showNotif('error', 'Please try again!', 'bottom-start')
+            console.log(res)
           }
+          qrloading.value = false
           progress.finish()
         } catch (error) {
+          qrloading.value = false
           showNotif('error', 'Please scan the correct QR Code', 'bottom-start')
           console.error(error)
           progress.finish()
@@ -431,12 +434,22 @@ export default defineComponent({
         } else {
           showNotif('error', 'Please try again!', 'bottom-start')
         }
+        phone_number.value = ''
         progress.finish()
       } catch (error) {
         showNotif('error', 'Please input the correct phone number', 'bottom-start')
         console.error(error)
         progress.finish()
       }
+    }
+
+    const checkComponent = (data = null) => {
+      registration.value[data.key] = data?.value
+      console.log(registration.value)
+    }
+
+    const newData = (data) => {
+      registration.value[data?.key] = data?.value
     }
 
     const checkingData = (data) => {
@@ -521,6 +534,8 @@ export default defineComponent({
       registration,
       onDecode,
       checkPhone,
+      checkComponent,
+      newData,
       checkingData,
       submit
     }

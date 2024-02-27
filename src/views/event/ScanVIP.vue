@@ -2,22 +2,24 @@
   <div id="registration">
     <div class="container-fluid">
       <div class="row" style="height: 100dvh" v-if="scan">
-        <div class="col-md-8 bg-primary">
-          <div class="d-flex align-items-center w-100 h-100 px-5">
-            <h2>Event Name</h2>
-          </div>
-        </div>
+        <div
+          class="col-md-8 bg-primary"
+          style="
+            background: url('/img/bg-scan.webp');
+            background-size: cover;
+            background-position: center;
+          "
+        ></div>
         <div class="col-md-4">
           <div class="d-flex align-items-center w-100 h-100 px-5">
             <div class="d-flex align-items-center w-100 h-100">
               <div class="w-100 text-center">
                 <h3>
                   <strong>
-                    SCAN YOUR <br />
-                    QR-CODE HERE
+                    VIP MEMBER
                   </strong>
                 </h3>
-                <div class="card shadow-sm rounded-0 border-0 mb-3">
+                <div class="card shadow-sm rounded-0 border-0 mb-3" style="background-color: #FED118;">
                   <div class="card-body">
                     <div class="p-2" v-if="!qrloading">
                       <qr-stream @decode="onDecode" style="width: 100%" class="rounded">
@@ -55,11 +57,7 @@
               <div class="card-body">
                 <div class="row align-items-center">
                   <div class="col-md-4 text-center">
-                    <img
-                      src="/public/img/confirmation.svg"
-                      alt="EduALL Confirmation"
-                      class="w-75"
-                    />
+                    <img src="/img/confirmation.svg" alt="EduALL Confirmation" class="w-75" />
                   </div>
                   <div class="col-md-8">
                     <div class="row g-3">
