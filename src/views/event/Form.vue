@@ -34,7 +34,7 @@
             <div class="col-md-4 col-form" v-if="formType == 'cta'">
               <div
                 class="card h-100 bg-form rounded shadow"
-                :style="'background: url(/public/img/' + bg_registration + ')'"
+                :style="'background: url(/img/' + bg_registration + ')'"
               >
                 <div
                   class="progress rounded-pill m-2"
