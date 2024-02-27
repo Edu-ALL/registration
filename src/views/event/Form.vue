@@ -34,7 +34,11 @@
             <div class="col-md-4 col-form" v-if="formType == 'cta'">
               <div
                 class="card h-100 bg-form rounded shadow"
-                :style="'background: url(/img/' + bg_registration + ')'"
+                :style="
+                  event?.event_banner
+                    ? 'background: url(' + event?.event_banner + ')'
+                    : 'background: url(/img/bg.jpg)'
+                "
               >
                 <div
                   class="progress rounded-pill m-2"
@@ -178,7 +182,7 @@
                       <div class="row g-3">
                         <div class="col">
                           <div class="role">
-                            <img src="/img/student.avif" alt="student" />
+                            <img src="/img/student.webp" alt="student" />
                             <input
                               class="role-input"
                               type="radio"
@@ -186,14 +190,14 @@
                               v-model="registration.role"
                               value="student"
                               id="studentRole"
-                              @change="checkRole('student.avif')"
+                              @change="checkRole"
                             />
-                            <label class="role-label" for="studentRole"> Student </label>
+                            <label class="role-label" for="studentRole"></label>
                           </div>
                         </div>
                         <div class="col">
                           <div class="role">
-                            <img src="/img/parent.jpg" alt="parent" />
+                            <img src="/img/parent.webp" alt="parent" />
                             <input
                               class="role-input"
                               type="radio"
@@ -201,14 +205,14 @@
                               id="parentRole"
                               v-model="registration.role"
                               value="parent"
-                              @change="checkRole('parent.jpg')"
+                              @change="checkRole"
                             />
-                            <label class="role-label" for="parentRole"> Parent </label>
+                            <label class="role-label" for="parentRole"></label>
                           </div>
                         </div>
                         <div class="col">
                           <div class="role">
-                            <img src="/img/teacher.avif" alt="teacher" />
+                            <img src="/img/teacher.webp" alt="teacher" />
                             <input
                               class="role-input"
                               type="radio"
@@ -216,9 +220,9 @@
                               id="teacherRole"
                               v-model="registration.role"
                               value="teacher/counsellor"
-                              @change="checkRole('teacher.avif')"
+                              @change="checkRole"
                             />
-                            <label class="role-label" for="teacherRole"> Teacher </label>
+                            <label class="role-label" for="teacherRole"></label>
                           </div>
                         </div>
                       </div>
@@ -620,7 +624,6 @@ export default defineComponent({
     const progress = ref(null)
     const step = ref(1)
     const loading = ref(false)
-    const bg_registration = ref('bg.jpg')
     const registration = ref({
       role: 'student',
       fullname: '',
@@ -733,9 +736,7 @@ export default defineComponent({
       checkProgress()
     }
 
-    const checkRole = (img) => {
-      bg_registration.value = img
-
+    const checkRole = () => {
       if (registration.value.role == 'parent') {
         registration.value.have_child = true
       } else {
@@ -834,20 +835,6 @@ export default defineComponent({
       const check = checkingValidation(section_1_rule)
       if (check) {
         step.value = 2
-        switch (registration.value.role) {
-          case 'parent':
-            bg_registration.value = 'parent.jpg'
-            break
-          case 'teacher/counsellor':
-            bg_registration.value = 'teacher.avif'
-            break
-          case 'student':
-            bg_registration.value = 'student.avif'
-            break
-
-          default:
-            break
-        }
       }
 
       setTimeout(() => {
@@ -981,7 +968,6 @@ export default defineComponent({
       scholarship_list,
       rules,
       validate,
-      bg_registration,
       event,
       checkRole,
       checkComponent,

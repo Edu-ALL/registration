@@ -6,7 +6,7 @@
           <div class="card border-0 shadow">
             <div class="card-body bg-primary text-white">
               <div class="row align-items-center" v-if="event?.code == 'SCS'">
-                <div :class="status == 'pra-reg' ? 'col-md-8' : 'col-md-12'">
+                <div :class="status == 'pra-reg' ? 'col-md-7' : 'col-md-12'">
                   <img src="/img/check.png" alt="completed" width="10%" class="mb-4" />
                   <h3>Hi, {{ event?.data?.client.name }}</h3>
                   <h4 class="mb-4">
@@ -49,7 +49,7 @@
                   </div>
                 </div>
 
-                <div :class="status == 'pra-reg' ? 'col-md-4' : 'col-md-12'">
+                <div :class="status == 'pra-reg' ? 'col-md-5' : 'col-md-12'">
                   <div :class="status == 'pra-reg' ? 'card border-0 shadow bg-dark' : ''">
                     <div class="px-3 pt-2 text-end" v-if="status == 'pra-reg'">
                       <div class="d-flex justify-content-between align-items-center text-white">

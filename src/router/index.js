@@ -32,7 +32,7 @@ const router = createRouter({
       component: () => import('@/views/event/ScanVIP.vue')
     },
     {
-      path: '/scan/event/:id',
+      path: '/scan/event/:id?',
       name: 'scan-event',
       props: (route) => ({
         eventId: route.params.id

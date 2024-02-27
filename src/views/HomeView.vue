@@ -13,21 +13,22 @@
         <div class="d-flex align-items-center w-100 h-100 px-5">
           <div class="row g-4">
             <div class="col-12">
-              <div class="card shadow rounded border-0 cursor-pointer" @click="redirect('onsite')">
-                <div class="card-body text-center">
-                  <img src="/img/onsite.avif" alt="Onsite Registration" class="logo-menu" />
-                  <h3>
-                    Onsite <br />
-                    Registration
-                  </h3>
+              <div
+                class="card shadow-lg rounded border-0 cursor-pointer"
+                @click="redirect('onsite')"
+              >
+                <div class="card-body text-center p-1">
+                  <img src="/img/onsite-reg.jpg" alt="Onsite Registration" class="w-100" />
                 </div>
               </div>
             </div>
             <div class="col-12">
-              <div class="card shadow rounded-0 border-0 cursor-pointer" @click="redirect('scan')">
-                <div class="card-body text-center">
-                  <img src="/img/scan.jpg" alt="Scan QR" class="logo-menu" />
-                  <h3>Scan <br />QR Code</h3>
+              <div
+                class="card shadow-lg rounded-0 border-0 cursor-pointer"
+                @click="redirect('scan')"
+              >
+                <div class="card-body text-center p-1">
+                  <img src="/img/scan-qr.jpg" alt="Scan QR" class="w-100" />
                 </div>
               </div>
             </div>
