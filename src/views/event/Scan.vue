@@ -20,7 +20,7 @@
                   </div>
                 </router-link>
                 <div class="p-2 text-white" style="background: #0100d4">
-                  <h3 class="m-0">
+                  <h3 class="m-0" style="text-shadow: 2px 2px #3a3939;">
                     <strong>
                       SCAN YOUR <br />
                       QR-CODE HERE
@@ -40,12 +40,12 @@
                 </div>
                 <h4>OR</h4>
                 <div class="p-2" style="background: #fed118">
-                  <h5 class="m-0 text-dark">
+                  <h5 class="m-0 text-dark" style="text-shadow: 1px 1px #fff;">
                     <strong> WITH PHONE NUMBER </strong>
                   </h5>
                 </div>
                 <div class="card shadow rounded-0 border-0">
-                  <div class="card-body">
+                  <div class="card-body p-1">
                     <div class="input-group">
                       <span class="input-group-text" id="number">
                         <box-icon name="phone" size="15px" animation="tada" class="pb-2"></box-icon>
