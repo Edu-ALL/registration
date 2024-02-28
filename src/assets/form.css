@@ -1,5 +1,5 @@
 #registration {
-    background: url('../../public/img/bg-regist.jpg');
+    background: url('/img/bg-regist.jpg');
     background-size: cover;
     background-position: center;
     margin: 0;
@@ -42,6 +42,24 @@ small.label box-icon {
 
 .vs__dropdown-menu {
     max-height: 150px !important;
+}
+
+.card-regist{
+    overflow: hidden;
+    border: 4px solid #0000B2 !important;
+}
+
+.card-regist,
+.card-regist .card-body img {
+    transition: all ease-in-out 0.3s;
+}
+
+.card-regist:hover {
+    border: 4px solid #FED118 !important;
+}
+
+.card-regist:hover > .card-body img {
+    transform: scale(1.1);
 }
 
 .bg-form {
@@ -114,7 +132,7 @@ small.error {
     font-size: inherit;
     top: 5px;
     right: 5px;
-    z-index: 2;
+    z-index: -1;
 }
 
 .role-input:checked~.role-label {
@@ -178,15 +196,15 @@ small.error {
     }
 
     .role img {
-        height: 100px;
+        height: 110px;
     }
 
     .role:hover>.role-label {
-        height: 100px;
+        height: 100%;
     }
 
 
     .role-label {
-        height: 35px;
+        height: 100%;
     }
 }

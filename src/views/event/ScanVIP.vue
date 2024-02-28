@@ -14,14 +14,16 @@
           <div class="d-flex align-items-center w-100 h-100 px-5">
             <div class="d-flex align-items-center w-100 h-100">
               <div class="w-100 text-center">
-                <h3>
-                  <strong>
-                    VIP MEMBER
-                  </strong>
-                </h3>
-                <div class="card shadow-sm rounded-0 border-0 mb-3" style="background-color: #FED118;">
-                  <div class="card-body">
-                    <div class="p-2" v-if="!qrloading">
+                <div class="p-2 text-dark" style="background: #FED118">
+                  <h3 class="m-0">
+                    <strong>
+                      VIP MEMBER
+                    </strong>
+                  </h3>
+                </div>
+                <div class="card shadow rounded-0 border-0 mb-3">
+                  <div class="card-body p-1">
+                    <div class="p-0" v-if="!qrloading">
                       <qr-stream @decode="onDecode" style="width: 100%" class="rounded">
                       </qr-stream>
                     </div>

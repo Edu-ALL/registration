@@ -19,15 +19,17 @@
                     <font-awesome-icon icon="fa-home" class="me-2"></font-awesome-icon> Back to Home
                   </div>
                 </router-link>
-                <h3>
-                  <strong>
-                    SCAN YOUR <br />
-                    QR-CODE HERE
-                  </strong>
-                </h3>
-                <div class="card shadow-sm rounded-0 border-0 mb-3">
-                  <div class="card-body">
-                    <div class="p-2" v-if="!qrloading">
+                <div class="p-2 text-white" style="background: #0100d4">
+                  <h3 class="m-0">
+                    <strong>
+                      SCAN YOUR <br />
+                      QR-CODE HERE
+                    </strong>
+                  </h3>
+                </div>
+                <div class="card shadow rounded-0 border-0 mb-3">
+                  <div class="card-body p-1">
+                    <div class="p-0" v-if="!qrloading">
                       <qr-stream @decode="onDecode" style="width: 100%" class="rounded">
                       </qr-stream>
                     </div>
@@ -37,10 +39,14 @@
                   </div>
                 </div>
                 <h4>OR</h4>
-                <h5>WITH PHONE NUMBER</h5>
-                <div class="card shadow-sm rounded-0 border-0">
+                <div class="p-2" style="background: #fed118">
+                  <h5 class="m-0 text-dark">
+                    <strong> WITH PHONE NUMBER </strong>
+                  </h5>
+                </div>
+                <div class="card shadow rounded-0 border-0">
                   <div class="card-body">
-                    <div class="input-group mb-3">
+                    <div class="input-group">
                       <span class="input-group-text" id="number">
                         <box-icon name="phone" size="15px" animation="tada" class="pb-2"></box-icon>
                       </span>
@@ -243,7 +249,13 @@
                         </div>
                       </div>
 
-                      <div class="col-md-12">
+                      <div
+                        class="col-md-12"
+                        v-if="
+                          (registration.role == 'parent' && registration.have_child) ||
+                          registration.role == 'student' || registration.role == 'teacher'
+                        "
+                      >
                         <small class="text-muted label">
                           <box-icon
                             name="school"
@@ -411,8 +423,8 @@ export default defineComponent({
             checkingData(res.data)
           } else {
             showNotif('error', 'Please try again!', 'bottom-start')
-            console.log(res)
           }
+          console.log(res)
           qrloading.value = false
           progress.finish()
         } catch (error) {
@@ -513,6 +525,7 @@ export default defineComponent({
             'bottom-start'
           )
         }
+        console.log(res);
         loading.value = false
         progress.finish()
       } catch (error) {

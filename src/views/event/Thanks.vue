@@ -108,7 +108,7 @@
                           <a href="#" @click="goToIA()"> here </a>
                           and use your ticket ID
                         </div>
-                        <small>Ticket ID:</small>
+                        <small class="text-white">Ticket ID:</small>
                         <div class="card border-0 shadow mt-2">
                           <h5 class="text-uppercase py-3 mb-0">
                             {{ event?.data?.clientevent.ticket_id }}

@@ -179,7 +179,7 @@
                         ></box-icon>
                         {{ validate.role.$silentErrors[0]?.$message }}
                       </small>
-                      <div class="row g-3">
+                      <div class="row row-cols-md-3 row-cols-3 g-3">
                         <div class="col">
                           <div class="role">
                             <img src="/img/student.webp" alt="student" />
