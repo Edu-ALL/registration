@@ -182,7 +182,7 @@
                       <div class="row row-cols-md-3 row-cols-3 g-3">
                         <div class="col">
                           <div class="role">
-                            <img v-lazy="'/img/student.webp'" alt="student" />
+                            <img src="/img/student.webp" alt="student" />
                             <input
                               class="role-input"
                               type="radio"
@@ -197,7 +197,7 @@
                         </div>
                         <div class="col">
                           <div class="role">
-                            <img v-lazy="'/img/parent.webp'" alt="parent" />
+                            <img src="/img/parent.webp" alt="parent" />
                             <input
                               class="role-input"
                               type="radio"
@@ -212,7 +212,7 @@
                         </div>
                         <div class="col">
                           <div class="role">
-                            <img v-lazy="'/img/teacher.webp'" alt="teacher" />
+                            <img src="/img/teacher.webp" alt="teacher" />
                             <input
                               class="role-input"
                               type="radio"

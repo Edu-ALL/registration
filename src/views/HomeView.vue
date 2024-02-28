@@ -9,7 +9,7 @@
           background-position: center;
         "
       ></div>
-      <div class="col-md-3 bg-white">
+      <div class="col-md-3">
         <div class="d-flex align-items-center w-100 h-100 px-5">
           <div class="row g-4">
             <div class="col-12">
@@ -18,7 +18,7 @@
                 @click="redirect('onsite')"
               >
                 <div class="card-body text-center p-0">
-                  <img v-lazy="'/img/onsite-reg.jpg'" alt="Onsite Registration" class="w-100" />
+                  <img src="/img/onsite-reg.jpg" alt="Onsite Registration" class="w-100" />
                 </div>
               </div>
             </div>
@@ -28,7 +28,7 @@
                 @click="redirect('scan')"
               >
                 <div class="card-body text-center p-0">
-                  <img v-lazy="'/img/scan-qr.jpg'" alt="Scan QR" class="w-100" />
+                  <img src="/img/scan-qr.jpg" alt="Scan QR" class="w-100" />
                 </div>
               </div>
             </div>
