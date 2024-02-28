@@ -26,6 +26,7 @@
     "lodash": "^4.17.21",
     "sweetalert2": "^11.10.5",
     "vue": "^3.3.11",
+    "vue-lazyload": "^3.0.0",
     "vue-qrcode": "^2.2.2",
     "vue-router": "^4.2.5",
     "vue-select": "^4.0.0-beta.6",

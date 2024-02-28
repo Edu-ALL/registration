@@ -18,7 +18,7 @@
                 @click="redirect('onsite')"
               >
                 <div class="card-body text-center p-0">
-                  <img src="/img/onsite-reg.jpg" alt="Onsite Registration" class="w-100" />
+                  <img v-lazy="'/img/onsite-reg.jpg'" alt="Onsite Registration" class="w-100" />
                 </div>
               </div>
             </div>
@@ -28,7 +28,7 @@
                 @click="redirect('scan')"
               >
                 <div class="card-body text-center p-0">
-                  <img src="/img/scan-qr.jpg" alt="Scan QR" class="w-100" />
+                  <img v-lazy="'/img/scan-qr.jpg'" alt="Scan QR" class="w-100" />
                 </div>
               </div>
             </div>
