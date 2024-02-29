@@ -1,6 +1,7 @@
 <template>
   <div id="registration">
     <div class="container">
+      {{ event }}
       <div class="row align-items-center justify-content-center" style="height: 100dvh">
         <div class="text-center" :class="status == 'pra-reg' ? 'col-md-7' : 'col-md-5'">
           <div class="card border-0 shadow">

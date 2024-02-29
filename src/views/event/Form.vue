@@ -882,10 +882,11 @@ export default defineComponent({
           errors.value = res.error
           showNotif(
             'error',
-            res.message ? res.message : 'Please check errors by clicking the bottom right button'
+            res.message ? res.message : 'Please check errors by clicking the bottom right button',
+            'bottom-start'
           )
         } else {
-          showNotif('success', res.message)
+          showNotif('success', res.message, 'bottom-start')
           setTimeout(() => {
             ClientEventService.saveClientEvent(res)
 

@@ -253,7 +253,7 @@
                         class="col-md-12"
                         v-if="
                           (registration.role == 'parent' && registration.have_child) ||
-                          registration.role == 'student' || registration.role == 'teacher'
+                          registration.role == 'student' || registration.role == 'teacher/counsellor'
                         "
                       >
                         <small class="text-muted label">
@@ -465,11 +465,12 @@ export default defineComponent({
     }
 
     const checkingData = (data) => {
+      console.log(data);
       if (data?.joined_event?.attend_status == 1) {
         showNotif('warning', 'You have already scanned.', 'bottom-start')
       } else {
         scan.value = false
-        const role = data.role == 'teacher/counsellor' ? 'teacher' : data.role
+        const role = data.role
         is_vip.value = data.is_vip
         event_id.value = data.joined_event?.clientevent_id
 
