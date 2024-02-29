@@ -699,13 +699,11 @@ export default defineComponent({
     const checkComponent = (data = null) => {
       touchField(data?.key)
       registration.value[data.key] = data?.value
-      console.log(registration.value);
       checkProgress()
     }
 
     const newData = (data) => {
       registration.value[data?.key] = data?.value
-      console.log(registration.value);
     }
 
     // Validasi

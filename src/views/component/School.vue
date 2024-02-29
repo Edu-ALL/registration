@@ -77,7 +77,7 @@ export default defineComponent({
 
         emit('new', {
           key: 'other_school',
-          value: data
+          value: data.sch_name ? data.sch_name : data
         })
       }
     }
