@@ -1,8 +1,12 @@
 <template>
   <div id="registration">
     <div class="container">
-      {{ event }}
-      <div class="row align-items-center justify-content-center" style="height: 100dvh">
+      <!-- Offline Event  -->
+      <div
+        class="row align-items-center justify-content-center"
+        style="height: 100dvh"
+        v-if="event?.data?.clientevent?.is_offline"
+      >
         <div class="text-center" :class="status == 'pra-reg' ? 'col-md-7' : 'col-md-5'">
           <div class="card border-0 shadow">
             <div class="card-body bg-primary text-white">
@@ -79,8 +83,10 @@
                       <div
                         class="bg-dark p-4 rounded"
                         v-if="
-                          event?.data?.client?.register_as == 'student' &&
-                          !event?.data?.client?.is_vip
+                          (event?.data?.client?.register_as == 'student' &&
+                            !event?.data?.client?.is_vip) ||
+                          (event?.data?.client?.register_as == 'parent' &&
+                            event?.data?.client?.have_child)
                         "
                       >
                         <div v-if="status == 'ots'" class="mb-3">
@@ -133,6 +139,8 @@
                   </div>
                 </div>
               </div>
+
+              <!-- Already Regist  -->
               <div class="row align-items-center justify-content-center" v-else>
                 <div class="col-md-10">
                   <img src="/img/check.png" alt="completed" width="10%" class="mb-4" />
@@ -140,6 +148,21 @@
                   <p>Dive into the event's activities and connect with others.</p>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Online Event  -->
+      <div class="row align-items-center justify-content-center" style="height: 100dvh" v-else>
+        <div class="col-md-6">
+          <div class="card bg-primary">
+            <div class="card-body text-center text-white">
+              <img src="/img/check.png" alt="completed" width="10%" class="mb-4" />
+              <h3>Hi, {{ event?.data?.client.name }}</h3>
+              <h4 class="my-4">
+                <span> Thank you for registering our event! </span>
+              </h4>
             </div>
           </div>
         </div>
