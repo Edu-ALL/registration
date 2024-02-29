@@ -30,10 +30,10 @@
               </div>
             </router-link>
           </div>
-          <div class="row justify-content-center align-items-stretch g-1">
+          <div class="row justify-content-center align-items-md-stretch g-1">
             <div class="col-md-4 col-form" v-if="formType == 'cta'">
               <div
-                class="card h-100 bg-form rounded shadow"
+                class="card h-100 bg-form rounded-0 shadow"
                 :style="
                   event?.event_banner
                     ? 'background: url(' + event?.event_banner + ')'
@@ -49,7 +49,10 @@
                 >
                   <div class="progress-bar bg-success" :style="'width:' + progress + '%'"></div>
                 </div>
-                <div class="card-body p-0 d-flex align-items-end justify-content-center" v-if="!event?.event_banner">
+                <div
+                  class="card-body p-0 d-flex align-items-end justify-content-center"
+                  v-if="!event?.event_banner"
+                >
                   <div
                     class="w-100 d-flex align-items-center justify-content-center py-2 rounded"
                     style="background: #251b815b"
@@ -910,7 +913,6 @@ export default defineComponent({
       const endpoint = 'v1/event/' + registration.value.event_id
       try {
         const res = await ApiService.get(endpoint)
-        console.log(res);
         if (res.success) {
           event.value = res.data
         } else {

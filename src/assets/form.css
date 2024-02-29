@@ -199,6 +199,12 @@ small.error {
         height: 20vh !important;
     }
 
+    .bg-form {
+        background-color: #0000D2 !important;
+        background-size: 50% !important;
+        background-position: center !important;
+    }
+
     .role-input:checked~.role-label {
         height: 100px;
     }
