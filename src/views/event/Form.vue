@@ -49,7 +49,7 @@
                 >
                   <div class="progress-bar bg-success" :style="'width:' + progress + '%'"></div>
                 </div>
-                <div class="card-body p-0 d-flex align-items-end justify-content-center">
+                <div class="card-body p-0 d-flex align-items-end justify-content-center" v-if="!event?.event_banner">
                   <div
                     class="w-100 d-flex align-items-center justify-content-center py-2 rounded"
                     style="background: #251b815b"
@@ -910,6 +910,7 @@ export default defineComponent({
       const endpoint = 'v1/event/' + registration.value.event_id
       try {
         const res = await ApiService.get(endpoint)
+        console.log(res);
         if (res.success) {
           event.value = res.data
         } else {

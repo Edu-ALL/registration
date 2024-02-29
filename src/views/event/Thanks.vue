@@ -236,15 +236,22 @@ export default defineComponent({
     }
 
     onMounted(() => {
+      event.value = ClientEventService.getClientEvent()
+
       if (props.status != 'pra-reg' && props.status != 'ots') {
         router.push({ name: 'NotFound' })
       } else {
         if (props.type == 'onsite') {
-          setTimeout(() => {
-            router.push({ name: 'home' })
-          }, 5000)
+          if(event.value.data?.client?.is_vip) {
+            setTimeout(() => {
+              router.push({ name: 'scan-event-vip' })
+            }, 5000)
+          } else {
+            setTimeout(() => {
+              router.push({ name: 'home' })
+            }, 5000)
+          }
         }
-        event.value = ClientEventService.getClientEvent()
       }
     })
 

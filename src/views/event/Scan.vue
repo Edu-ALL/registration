@@ -20,7 +20,7 @@
                   </div>
                 </router-link>
                 <div class="p-2 text-white" style="background: #0100d4">
-                  <h3 class="m-0" style="text-shadow: 2px 2px #3a3939;">
+                  <h3 class="m-0" style="text-shadow: 2px 2px #3a3939">
                     <strong>
                       SCAN YOUR <br />
                       QR-CODE HERE
@@ -40,7 +40,7 @@
                 </div>
                 <h4>OR</h4>
                 <div class="p-2" style="background: #fed118">
-                  <h5 class="m-0 text-dark" style="text-shadow: 1px 1px #fff;">
+                  <h5 class="m-0 text-dark" style="text-shadow: 1px 1px #fff">
                     <strong> WITH PHONE NUMBER </strong>
                   </h5>
                 </div>
@@ -253,7 +253,8 @@
                         class="col-md-12"
                         v-if="
                           (registration.role == 'parent' && registration.have_child) ||
-                          registration.role == 'student' || registration.role == 'teacher/counsellor'
+                          registration.role == 'student' ||
+                          registration.role == 'teacher/counsellor'
                         "
                       >
                         <small class="text-muted label">
@@ -413,27 +414,31 @@ export default defineComponent({
     })
 
     const onDecode = async (value) => {
-      qrloading.value = true
-      const progress = useProgress().start()
-      if (value) {
-        const endpoint = 'v1/client-event/TKT/' + value
-        try {
-          const res = await ApiService.get(endpoint)
-          if (res.success) {
-            checkingData(res.data)
-          } else {
-            showNotif('error', 'Please try again!', 'bottom-start')
+      if (value.length > 10) {
+        router.push({ name: 'scan-event-vip', query: { url: value } })
+      } else {
+        qrloading.value = true
+        const progress = useProgress().start()
+        if (value) {
+          const endpoint = 'v1/client-event/TKT/' + value
+          try {
+            const res = await ApiService.get(endpoint)
+            if (res.success) {
+              checkingData(res.data)
+            } else {
+              showNotif('error', 'Please try again!', 'bottom-start')
+            }
+            qrloading.value = false
+            progress.finish()
+          } catch (error) {
+            qrloading.value = false
+            showNotif('error', 'Please scan the correct QR Code', 'bottom-start')
+            console.error(error)
+            progress.finish()
           }
-          console.log(res)
-          qrloading.value = false
-          progress.finish()
-        } catch (error) {
-          qrloading.value = false
-          showNotif('error', 'Please scan the correct QR Code', 'bottom-start')
-          console.error(error)
-          progress.finish()
         }
       }
+
     }
 
     const checkPhone = async () => {
@@ -457,7 +462,6 @@ export default defineComponent({
 
     const checkComponent = (data = null) => {
       registration.value[data.key] = data?.value
-      console.log(registration.value)
     }
 
     const newData = (data) => {
@@ -465,7 +469,6 @@ export default defineComponent({
     }
 
     const checkingData = (data) => {
-      console.log(data);
       if (data?.joined_event?.attend_status == 1) {
         showNotif('warning', 'You have already scanned.', 'bottom-start')
       } else {
@@ -526,7 +529,6 @@ export default defineComponent({
             'bottom-start'
           )
         }
-        console.log(res);
         loading.value = false
         progress.finish()
       } catch (error) {

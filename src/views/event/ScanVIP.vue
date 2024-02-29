@@ -14,11 +14,9 @@
           <div class="d-flex align-items-center w-100 h-100 px-5">
             <div class="d-flex align-items-center w-100 h-100">
               <div class="w-100 text-center">
-                <div class="p-2 text-dark" style="background: #FED118">
+                <div class="p-2 text-dark" style="background: #fed118">
                   <h3 class="m-0">
-                    <strong>
-                      VIP MEMBER
-                    </strong>
+                    <strong> VIP MEMBER </strong>
                   </h3>
                 </div>
                 <div class="card shadow rounded-0 border-0 mb-3">
@@ -378,7 +376,6 @@ export default defineComponent({
     })
 
     const onDecode = async (value) => {
-      console.log(value)
       const progress = useProgress().start()
       qrloading.value = true
       if (value) {
@@ -404,7 +401,6 @@ export default defineComponent({
       const progress = useProgress().start()
       qrloading.value = true
       const endpoint = url
-      console.log(endpoint)
       try {
         const res = await ApiService.get(endpoint)
         if (res.success) {
@@ -424,7 +420,6 @@ export default defineComponent({
 
     const checkComponent = (data = null) => {
       registration.value[data.key] = data?.value
-      console.log(registration.value)
     }
 
     const newData = (data) => {
@@ -432,39 +427,44 @@ export default defineComponent({
     }
 
     const checkingData = (data) => {
-      scan.value = false
-      const role = data.role == 'teacher/counsellor' ? 'teacher' : data.role
-      is_vip.value = data.is_vip
-      event_id.value = data.joined_event?.clientevent_id
+      if (data?.joined_event?.attend_status == 1) {
+        showNotif('warning', 'You have already scanned.', 'bottom-start')
+      } else {
+        scan.value = false
+        const role = data.role == 'teacher/counsellor' ? 'teacher' : data.role
+        is_vip.value = data.is_vip
+        event_id.value = data.joined_event?.clientevent_id
 
-      registration.value.role = data.role
-      registration.value.fullname = data[role]?.name
-      registration.value.mail = data[role]?.mail
-      registration.value.phone = data[role]?.phone
-      registration.value.secondary_name = data.role == 'parent' ? data['student']?.name : null
-      registration.value.secondary_email = data.role == 'parent' ? data['student']?.mail : null
-      registration.value.secondary_phone = data.role == 'parent' ? data['student']?.phone : null
-      registration.value.school_id = data.education?.school_id
-      registration.value.other_school = null
-      registration.value.graduation_year = data.education?.graduation_year
-        ? data.education?.graduation_year
-        : null
-      registration.value.destination_country = []
-      if (data?.dreams_countries) {
-        data?.dreams_countries.forEach((element) => {
-          registration.value.destination_country.push(element.country_id)
-        })
+        registration.value.role = data.role
+        registration.value.fullname = data[role]?.name
+        registration.value.mail = data[role]?.mail
+        registration.value.phone = data[role]?.phone
+        registration.value.secondary_name = data.role == 'parent' ? data['student']?.name : null
+        registration.value.secondary_email = data.role == 'parent' ? data['student']?.mail : null
+        registration.value.secondary_phone = data.role == 'parent' ? data['student']?.phone : null
+        registration.value.school_id = data.education?.school_id
+        registration.value.other_school = null
+        registration.value.graduation_year = data.education?.graduation_year
+          ? data.education?.graduation_year
+          : null
+        registration.value.destination_country = []
+        if (data?.dreams_countries) {
+          data?.dreams_countries.forEach((element) => {
+            registration.value.destination_country.push(element.country_id)
+          })
+        }
+        registration.value.scholarship = data?.scholarship ? data?.scholarship : 'N'
+        registration.value.lead_source_id = data?.lead?.lead_id
+        registration.value.event_id = data?.joined_event?.event_id
+        registration.value.attend_status = data?.joined_event?.attend_status == 1 ? 'attend' : null
+        registration.value.attend_party = data?.joined_event?.attend_party
+        registration.value.event_type = data?.joined_event?.event_type
+        registration.value.status = data?.joined_event?.status == 'ots' ? 'OTS' : 'PR'
+        registration.value.referral = data?.joined_event?.referral
+        registration.value.client_type = data?.joined_event?.client_type
+        registration.value.have_child =
+          data.role == 'parent' && data['student']?.name ? true : false
       }
-      registration.value.scholarship = data?.scholarship ? data?.scholarship : 'N'
-      registration.value.lead_source_id = data?.lead?.lead_id
-      registration.value.event_id = data?.joined_event?.event_id
-      registration.value.attend_status = data?.joined_event?.attend_status == 1 ? 'attend' : null
-      registration.value.attend_party = data?.joined_event?.attend_party
-      registration.value.event_type = data?.joined_event?.event_type
-      registration.value.status = data?.joined_event?.status == 'ots' ? 'OTS' : 'PR'
-      registration.value.referral = data?.joined_event?.referral
-      registration.value.client_type = data?.joined_event?.client_type
-      registration.value.have_child = data.role == 'parent' && data['student']?.name ? true : false
     }
 
     const submit = async () => {
