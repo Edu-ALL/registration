@@ -242,13 +242,13 @@ export default defineComponent({
         router.push({ name: 'NotFound' })
       } else {
         if (props.type == 'onsite') {
-          if(event.value.data?.client?.is_vip) {
+          if (event.value.data?.client?.is_vip) {
             setTimeout(() => {
               router.push({ name: 'scan-event-vip' })
             }, 5000)
           } else {
             setTimeout(() => {
-              router.push({ name: 'home' })
+              router.push({ name: 'home', params: { member: 'admin' } })
             }, 5000)
           }
         }

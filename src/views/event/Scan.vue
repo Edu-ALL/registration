@@ -14,7 +14,7 @@
           <div class="d-flex align-items-center w-100 h-100 px-5">
             <div class="d-flex align-items-center w-100 h-100">
               <div class="w-100 text-center">
-                <router-link :to="{ name: 'home' }">
+                <router-link :to="{ name: 'home', params: { member: 'admin' } }">
                   <div class="btn btn-sm btn-outline-primary mb-4">
                     <font-awesome-icon icon="fa-home" class="me-2"></font-awesome-icon> Back to Home
                   </div>
@@ -438,7 +438,6 @@ export default defineComponent({
           }
         }
       }
-
     }
 
     const checkPhone = async () => {

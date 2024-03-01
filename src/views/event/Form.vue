@@ -24,7 +24,10 @@
 
         <div class="col-md-12">
           <div class="text-end">
-            <router-link :to="{ name: 'home' }" v-if="status == 'ots' && type == 'onsite'">
+            <router-link
+              :to="{ name: 'home', params: { member: 'admin' } }"
+              v-if="status == 'ots' && type == 'onsite'"
+            >
               <div class="btn btn-sm btn-outline-primary mb-2">
                 <font-awesome-icon icon="fa-home" class="me-2"></font-awesome-icon> Back to Home
               </div>
