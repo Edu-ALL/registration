@@ -41,10 +41,13 @@
 
 <script>
 import router from '@/router'
-import { defineComponent } from 'vue'
+import { defineComponent, onMounted } from 'vue'
 export default defineComponent({
   name: 'home-registration',
-  setup() {
+  props: {
+    member: String
+  },
+  setup(props) {
     const redirect = (type) => {
       if (type == 'onsite') {
         router.push({
@@ -67,6 +70,17 @@ export default defineComponent({
         })
       }
     }
+
+    onMounted(() => {
+      if (props.member != 'admin') {
+        router.push({
+          name: 'Error',
+          params: {
+            slug: 'access-denied'
+          }
+        })
+      }
+    })
 
     return {
       redirect
