@@ -1,5 +1,5 @@
 <template>
-  <div :id="formType == 'cta' ? 'registration' : ''">
+  <div :id="formType == 'cta' ? '' : ''">
     <div class="container">
       <div class="row justify-content-center align-items-center" style="min-height: 100dvh">
         <div class="position-fixed" style="bottom: 2%; left: 95%; z-index: 9999">
@@ -330,14 +330,13 @@
                   <div class="row g-3" v-if="registration.role == 'parent'">
                     <div class="col-md-12">
                       <div class="row">
-                        <div class="col-9">
+                        <div class="col-12 d-flex align-items-center gap-3">
                           <small class="text-muted label">
                             <box-icon name="child" size="15px" color="#797575"></box-icon>
                             <strong>Do you have a child?</strong>
                           </small>
-                        </div>
-                        <div class="col-3 d-flex justify-content-end">
-                          <div class="form-check form-switch">
+
+                          <div class="form-check form-switch mb-2">
                             <input
                               class="form-check-input"
                               type="checkbox"
@@ -406,7 +405,7 @@
                         <div class="col-md-4">
                           <small class="text-muted label">
                             <box-icon name="phone" size="xs" color="#797575"></box-icon>
-                            Your child number?
+                            Your child phone number?
                           </small>
                           <input
                             type="tel"

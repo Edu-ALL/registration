@@ -1,5 +1,5 @@
 <template>
-  <div id="registration">
+  <div id="thanks">
     <div class="container">
       <!-- Offline Event  -->
       <div
@@ -7,7 +7,7 @@
         style="height: 100dvh"
         v-if="event?.data?.clientevent?.is_offline"
       >
-        <div class="text-center" :class="status == 'pra-reg' ? 'col-md-7' : 'col-md-5'">
+        <div class="text-center" :class="status == 'pra-reg' ? 'col-md-8' : 'col-md-6'">
           <div class="card border-0 shadow">
             <div class="card-body bg-primary text-white">
               <div class="row align-items-center" v-if="event?.code == 'SCS'">
