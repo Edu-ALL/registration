@@ -22,7 +22,8 @@ const router = createRouter({
         eventType: route.query.et,
         attendStatus: route.query.as,
         status: route.query.s,
-        type: route.query.t
+        type: route.query.t,
+        assessment: route.query.a
       }),
       component: () => import('@/views/event/Form.vue')
     },
@@ -50,6 +51,11 @@ const router = createRouter({
         type: route.params.type // onsite or self
       }),
       component: () => import('@/views/event/Thanks.vue')
+    },
+    {
+      path: '/thanks/event/vip',
+      name: 'thanks-event-vip',
+      component: () => import('@/views/event/ThanksVIP.vue')
     },
     {
       path: '/form/program',

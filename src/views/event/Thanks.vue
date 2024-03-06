@@ -5,7 +5,7 @@
       <div
         class="row align-items-center justify-content-center"
         style="height: 100dvh"
-        v-if="event?.data?.clientevent?.is_offline"
+        v-if="(status == 'pra-reg' && event?.data?.clientevent?.is_offline) || status == 'ots'"
       >
         <div class="text-center" :class="status == 'pra-reg' ? 'col-md-8' : 'col-md-6'">
           <div class="card border-0 shadow">
@@ -39,7 +39,9 @@
                   <!-- Description for Student & Non Mentee  -->
                   <div
                     v-if="
-                      event?.data?.client?.register_as == 'student' && !event?.data?.client?.is_vip
+                      event?.data?.client?.register_as == 'student' ||
+                      (event?.data?.client?.register_as == 'parent' &&
+                        event?.data?.client?.have_child)
                     "
                   >
                     <p v-if="status == 'pra-reg'">
@@ -48,7 +50,7 @@
                     </p>
                     <p v-else>
                       We appreciate your participation. Please proceed to the initial assessment
-                      application by using your ticket ID or through this
+                      application by using your ticket number or through this
                       <span v-if="type == 'onsite'"> QR-Code </span> <span v-else> link </span> .
                     </p>
                   </div>
@@ -83,8 +85,7 @@
                       <div
                         class="bg-dark p-4 rounded"
                         v-if="
-                          (event?.data?.client?.register_as == 'student' &&
-                            !event?.data?.client?.is_vip) ||
+                          event?.data?.client?.register_as == 'student' ||
                           (event?.data?.client?.register_as == 'parent' &&
                             event?.data?.client?.have_child)
                         "
@@ -113,9 +114,9 @@
                           <h6 class="mt-2 mb-1">OR</h6>
                           Visit Initial Assesment
                           <a href="#" @click="goToIA()"> here </a>
-                          and use your ticket ID
+                          and use your ticket number
                         </div>
-                        <small class="text-white">Ticket ID:</small>
+                        <small class="text-white">Ticket Number:</small>
                         <div class="card border-0 shadow mt-2">
                           <h5 class="text-uppercase py-3 mb-0">
                             {{ event?.data?.clientevent.ticket_id }}

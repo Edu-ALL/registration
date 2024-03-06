@@ -372,14 +372,14 @@ export default defineComponent({
       status: 'PR',
       referral: '',
       client_type: '',
-      have_child: false
+      have_child: false,
     })
 
     const onDecode = async (value) => {
       const progress = useProgress().start()
       qrloading.value = true
       if (value) {
-        const endpoint = value
+        const endpoint = value + '&is_site=true'
         try {
           const res = await ApiService.get(endpoint)
           if (res.success) {
@@ -427,9 +427,9 @@ export default defineComponent({
     }
 
     const checkingData = (data) => {
-      if (data?.joined_event?.attend_status == 1) {
-        showNotif('warning', 'You have already scanned.', 'bottom-start')
-      } else {
+      // if (data?.joined_event?.attend_status == 1) {
+      //   showNotif('warning', 'You have already scanned.', 'bottom-start')
+      // } else {
         scan.value = false
         const role = data.role == 'teacher/counsellor' ? 'teacher' : data.role
         is_vip.value = data.is_vip
@@ -464,7 +464,7 @@ export default defineComponent({
         registration.value.client_type = data?.joined_event?.client_type
         registration.value.have_child =
           data.role == 'parent' && data['student']?.name ? true : false
-      }
+      // }
     }
 
     const submit = async () => {

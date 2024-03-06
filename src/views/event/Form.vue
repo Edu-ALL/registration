@@ -528,7 +528,7 @@
                   </div>
 
                   <div class="row mt-3">
-                    <div :class="status == 'ots' ? 'col-md-9' : 'col-md-12'">
+                    <div class="mb-3" :class="status == 'ots' ? 'col-md-9' : 'col-md-12'">
                       <small class="text-muted label">
                         <box-icon name="link" size="xs" color="#797575"></box-icon>
                         I know this event from
@@ -617,7 +617,8 @@ export default defineComponent({
     eventType: String,
     status: String,
     attendStatus: String,
-    type: String
+    type: String,
+    assessment: Boolean,
   },
   components: {
     School,
@@ -894,13 +895,18 @@ export default defineComponent({
           setTimeout(() => {
             ClientEventService.saveClientEvent(res)
 
-            router.push({
-              name: 'thanks-event',
-              params: {
-                status: registration.value.status == 'PR' ? 'pra-reg' : 'ots',
-                type: props.type == 'onsite' ? 'onsite' : 'self'
-              }
-            })
+            if(props.assessment) {
+              window.open("https://www.w3schools.com");
+              console.log(res);
+            } else {
+              router.push({
+                name: 'thanks-event',
+                params: {
+                  status: registration.value.status == 'PR' ? 'pra-reg' : 'ots',
+                  type: props.type == 'onsite' ? 'onsite' : 'self'
+                }
+              })
+            }
             reset()
           }, 2000)
         }
