@@ -400,7 +400,7 @@ export default defineComponent({
     const checkURL = async (url) => {
       const progress = useProgress().start()
       qrloading.value = true
-      const endpoint = url
+      const endpoint = `${url}&is_site=true`
       try {
         const res = await ApiService.get(endpoint)
         if (res.success) {

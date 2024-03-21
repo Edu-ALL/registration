@@ -415,7 +415,7 @@ export default defineComponent({
 
     const onDecode = async (value) => {
       if (value.length > 4) {
-        const endpoint = value + '&is_site=true'
+        const endpoint = value
         router.push({ name: 'scan-event-vip', query: { url: endpoint } })
       } else {
         qrloading.value = true
