@@ -28,6 +28,14 @@ const router = createRouter({
       component: () => import('@/views/event/Form.vue')
     },
     {
+      path: '/confirmation/vip',
+      name: 'confirm-vip',
+      props: (route) => ({
+        url: route.query.url
+      }),
+      component: () => import('@/views/event/ConfirmVIP.vue')
+    },
+    {
       path: '/scan/event/vip',
       name: 'scan-event-vip',
       props: (route) => ({
