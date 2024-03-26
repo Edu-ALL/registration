@@ -15,9 +15,13 @@
                 </strong>
               </h3>
               <h6>Register by clicking the button below.</h6>
-              <button class="btn btn-dark mt-4 w-100" @click="register">
+              <button class="btn btn-dark mt-4 mb-4 w-100" @click="register">
                 <strong> REGISTER NOW </strong>
               </button>
+
+              <p class="mb-0">
+                For further information you can click <a href="https://launchpad.edu-all.com" style="color:yellow" target="_blank">here</a>
+              </p>
             </div>
           </div>
         </div>
