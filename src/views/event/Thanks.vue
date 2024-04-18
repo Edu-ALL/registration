@@ -44,11 +44,11 @@
                         event?.data?.client?.have_child)
                     "
                   >
-                    <p v-if="status == 'pra-reg'">
+                    <!-- <p v-if="status == 'pra-reg'">
                       We appreciate your participation. To facilitate your re-registration on the
                       day of the event, please download and utilize the QR code provided below.
-                    </p>
-                    <p v-else>
+                    </p> -->
+                    <p v-if="status != 'pra-reg'">
                       We appreciate your participation. Please proceed to the initial assessment
                       application by using your ticket number or through this
                       <span v-if="type == 'onsite'"> QR-Code </span> <span v-else> link </span> .
@@ -250,7 +250,7 @@ export default defineComponent({
           } else {
             setTimeout(() => {
               router.push({ name: 'home', params: { member: 'admin' } })
-            }, 5000)
+            }, 15000)
           }
         }
       }
