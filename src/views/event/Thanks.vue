@@ -232,7 +232,7 @@ export default defineComponent({
     }
 
     const goToIA = (ticket_id = null) => {
-      const url = ticket_id ? import.meta.env.VITE_IA_URL + ticket_id : import.meta.env.VITE_IA_URL
+      const url = ticket_id ? import.meta.env.VITE_IA_URL + '?ticket=' + ticket_id : import.meta.env.VITE_IA_URL
       window.open(url, '_blank')
     }
 
