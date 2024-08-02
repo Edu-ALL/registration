@@ -1,0 +1,1 @@
+const t=r=>{window.localStorage.setItem("data-program",JSON.stringify(r))},o=()=>JSON.parse(window.localStorage.getItem("data-program")),a=()=>{window.localStorage.removeItem("data-program")},e={saveClientProgram:t,getClientProgram:o,destroyClientProgram:a};export{e as C};
