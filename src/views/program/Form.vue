@@ -1,709 +1,506 @@
 <template>
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-md-12">
-          <div class="row justify-content-center align-items-stretch g-1">
-            <div class="col-md-4 col-form" v-if="formType == 'cta'">
-              <div
-                class="card h-100 bg-form rounded-0 shadow"
-                :style="'background: url(/public/img/' + bg_registration + ')'"
-              >
-                <div
-                  class="progress rounded-pill m-2"
-                  role="progressbar"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                  style="height: 4px"
-                >
-                  <div class="progress-bar bg-success" :style="'width:' + progress + '%'"></div>
-                </div>
-                <div class="card-body p-0 d-flex align-items-end justify-content-center">
-                  <div
-                    class="w-100 d-flex align-items-center justify-content-center py-2"
-                    style="background: #251b815b"
-                  >
-                    <h5 class="text-white">Registration Name</h5>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-8">
-              <div
-                class="progress rounded-pill"
-                role="progressbar"
-                aria-valuemin="0"
-                aria-valuemax="100"
-                style="height: 4px"
-                v-if="formType != 'cta'"
-              >
-                <div class="progress-bar bg-success" :style="'width:' + progress + '%'"></div>
-              </div>
-              <!-- Personal  -->
-              <div class="card rounded-0 shadow" v-if="step == 1">
-                <div class="p-3 d-flex align-items-center justify-content-between">
-                  <h3 class="my-0">Let us know you better!</h3>
-                  <small class="text-muted">Page {{ step }} of 2</small>
-                </div>
-                <div class="card-body" :class="{ 'registration-card': formType == 'cta' }">
-                  <div class="row g-3">
-                    <div class="col-md-4">
-                      <small class="text-muted"> Full Name <span class="text-danger">*</span> </small>
-                      <input
-                        type="text"
-                        v-model="registration.fullname"
-                        class="form-control"
-                        :class="{
-                          'is-invalid': shouldShowError('fullname'),
-                          'is-valid': !shouldShowError('fullname') && registration.fullname
-                        }"
-                        @input="touchField('fullname')"
-                      />
-                      <small class="text-danger error" v-if="shouldShowError('fullname')">
-                        {{ validate.fullname.$silentErrors[0]?.$message }}
-                      </small>
-                    </div>
-                    <div class="col-md-4">
-                      <small class="text-muted"> Email <span class="text-danger">*</span> </small>
-                      <input
-                        type="email"
-                        v-model="registration.email"
-                        class="form-control"
-                        :class="{
-                          'is-invalid': shouldShowError('email'),
-                          'is-valid': !shouldShowError('email') && registration.email
-                        }"
-                        @input="touchField('email')"
-                      />
-                      <small class="text-danger error" v-if="shouldShowError('email')">
-                        {{ validate.email.$silentErrors[0]?.$message }}
-                      </small>
-                    </div>
-                    <div class="col-md-4">
-                      <small class="text-muted"> Phone <span class="text-danger">*</span> </small>
-                      <input
-                        type="tel"
-                        v-model="registration.phone"
-                        class="form-control"
-                        :class="{
-                          'is-invalid': shouldShowError('phone'),
-                          'is-valid': !shouldShowError('phone') && registration.phone
-                        }"
-                        @input="touchField('phone')"
-                      />
-                      <small class="text-danger error" v-if="shouldShowError('phone')">
-                        {{ validate.phone.$silentErrors[0]?.$message }}
-                      </small>
-                    </div>
-                    <div class="col-md-12 mt-3">
-                      <label class="text-muted"
-                        >You are a
-                        <span class="text-danger">*</span>
-                      </label>
-                      <small class="text-danger error" v-if="shouldShowError('role')">
-                        {{ validate.role.$silentErrors[0]?.$message }}
-                      </small>
-                      <div class="row g-3">
-                        <div class="col">
-                          <div class="role">
-                            <img src="/img/student.avif" alt="student" />
-                            <input
-                              class="role-input"
-                              type="radio"
-                              name="role"
-                              v-model="registration.role"
-                              value="student"
-                              id="studentRole"
-                              @input="bg_registration = 'student.avif'"
-                            />
-                            <label class="role-label" for="studentRole"> Student </label>
-                          </div>
-                        </div>
-                        <div class="col">
-                          <div class="role">
-                            <img src="/img/parent.jpg" alt="parent" />
-                            <input
-                              class="role-input"
-                              type="radio"
-                              name="role"
-                              id="parentRole"
-                              v-model="registration.role"
-                              value="parent"
-                              @input="bg_registration = 'parent.jpg'"
-                            />
-                            <label class="role-label" for="parentRole"> Parent </label>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="card-footer d-flex align-items-center justify-content-end">
-                  <button class="btn btn-sm btn-primary rounded-pill" @click="nextAdditional">
-                    {{ loading ? 'Waiting' : 'Next' }}
-                    <font-awesome-icon
-                      :icon="loading ? 'fa-solid fa-spinner' : 'fa-solid fa-arrow-right'"
-                      class="ms-2"
-                      :pulse="loading"
-                    />
-                  </button>
-                </div>
-              </div>
-  
-              <!-- Additional  -->
-              <div class="card shadow" v-if="step == 2">
-                <div class="p-3 d-flex align-items-center justify-content-between">
-                  <h3 class="my-0">Let us know you better!</h3>
-                  <small class="text-muted">Page {{ step }} of 2</small>
-                </div>
-                <div class="card-body" :class="{ 'registration-card': formType == 'cta' }">
-                  <!-- Student  -->
-                  <div class="row g-3" v-if="registration.role == 'student'">
-                    <div class="col-md-12">
-                      <small class="text-muted">
-                        Which school are you from? <span class="text-danger">*</span>
-                      </small>
-                      <v-select
-                        v-model="registration.school_id"
-                        :options="['Canada', 'United States']"
-                        placeholder="Select the value"
-                        :on-change="touchField('school_id')"
-                      />
-                      <small class="text-danger error" v-if="shouldShowError('school_id')">
-                        {{ validate.school_id.$silentErrors[0]?.$message }}
-                      </small>
-                    </div>
-                    <div class="col-md-12">
-                      <small class="text-muted">
-                        When do you expect to graduate? <span class="text-danger">*</span>
-                      </small>
-                      <input
-                        type="text"
-                        v-model="registration.graduation_year"
-                        class="form-control"
-                        :class="{
-                          'is-invalid': shouldShowError('graduation_year'),
-                          'is-valid':
-                            !shouldShowError('graduation_year') && registration.graduation_year
-                        }"
-                        @input="touchField('graduation_year')"
-                      />
-                      <small class="text-danger error" v-if="shouldShowError('graduation_year')">
-                        {{ validate.graduation_year.$silentErrors[0]?.$message }}
-                      </small>
-                    </div>
-                    <div class="col-md-12">
-                      <small class="text-muted">
-                        Are you eligible for a need-based scholarship?
-                        <span class="text-danger">*</span>
-                      </small>
-                      <v-select
-                        v-model="registration.scholarship"
-                        :options="['Yes', 'No']"
-                        placeholder="Select the value"
-                        :on-change="touchField('scholarship')"
-                      />
-                      <small class="text-danger error" v-if="shouldShowError('scholarship')">
-                        {{ validate.scholarship.$silentErrors[0]?.$message }}
-                      </small>
-                    </div>
-                    <div class="col-md-12">
-                      <small class="text-muted">
-                        Which country are you thinking of studying in?
-                        <span class="text-danger">*</span>
-                      </small>
-                      <v-select
-                        v-model="registration.destination_country"
-                        :options="['Yes', 'No']"
-                        placeholder="Select the value"
-                        :on-change="touchField('destination_country')"
-                      />
-                      <small class="text-danger error" v-if="shouldShowError('destination_country')">
-                        {{ validate.destination_country.$silentErrors[0]?.$message }}
-                      </small>
-                    </div>
-                  </div>
-  
-                  <!-- Parent  -->
-                  <div class="row g-3" v-if="registration.role == 'parent'">
-                    <div class="col-md-12">
-                      <div class="row">
-                        <div class="col-9">
-                          <small class="text-muted">
-                            <strong> Have you already child? </strong>
-                          </small>
-                        </div>
-                        <div class="col-3 d-flex justify-content-end">
-                          <div class="form-check form-switch">
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              role="switch"
-                              id="haveChild"
-                              v-model="registration.have_child"
-                              :checked="registration.have_child"
-                            />
-                            <label class="form-check-label" for="haveChild"></label>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-12" v-if="registration.have_child">
-                      <div class="row g-3">
-                        <div class="col-md-4">
-                          <small class="text-muted">
-                            Your child fullname? <span class="text-danger">*</span>
-                          </small>
-                          <input
-                            type="text"
-                            v-model="registration.secondary_name"
-                            class="form-control"
-                            :class="{
-                              'is-invalid': shouldShowError('secondary_name'),
-                              'is-valid':
-                                !shouldShowError('secondary_name') && registration.secondary_name
-                            }"
-                            @input="touchField('secondary_name')"
-                          />
-                          <small class="text-danger error" v-if="shouldShowError('secondary_name')">
-                            {{ validate.secondary_name.$silentErrors[0]?.$message }}
-                          </small>
-                        </div>
-                        <div class="col-md-4">
-                          <small class="text-muted"> Your child email? </small>
-                          <input
-                            type="text"
-                            v-model="registration.secondary_email"
-                            class="form-control"
-                            :class="{
-                              'is-invalid': shouldShowError('secondary_email'),
-                              'is-valid':
-                                !shouldShowError('secondary_email') && registration.secondary_email
-                            }"
-                            @input="touchField('secondary_email')"
-                          />
-                          <small class="text-danger error" v-if="shouldShowError('secondary_email')">
-                            {{ validate.secondary_email.$silentErrors[0]?.$message }}
-                          </small>
-                        </div>
-                        <div class="col-md-4">
-                          <small class="text-muted"> Your child number? </small>
-                          <input
-                            type="tel"
-                            v-model="registration.secondary_phone"
-                            class="form-control"
-                            :class="{
-                              'is-invalid': shouldShowError('secondary_phone'),
-                              'is-valid':
-                                !shouldShowError('secondary_phone') && registration.secondary_phone
-                            }"
-                            @input="touchField('secondary_phone')"
-                          />
-                          <small class="text-danger error" v-if="shouldShowError('secondary_phone')">
-                            {{ validate.secondary_phone.$silentErrors[0]?.$message }}
-                          </small>
-                        </div>
-                        <div class="col-md-12">
-                          <small class="text-muted">
-                            What school does your child go to? <span class="text-danger">*</span>
-                          </small>
-                          <v-select
-                            v-model="registration.school_id"
-                            :options="['Canada', 'United States']"
-                            placeholder="Select the value"
-                            :on-change="touchField('school_id')"
-                          />
-                          <small class="text-danger error" v-if="shouldShowError('school_id')">
-                            {{ validate.school_id.$silentErrors[0]?.$message }}
-                          </small>
-                        </div>
-                        <div class="col-md-12">
-                          <small class="text-muted">
-                            When do you expect your child to graduate?
-                            <span class="text-danger">*</span>
-                          </small>
-                          <input
-                            type="text"
-                            v-model="registration.graduation_year"
-                            class="form-control"
-                            :class="{
-                              'is-invalid': shouldShowError('graduation_year'),
-                              'is-valid':
-                                !shouldShowError('graduation_year') && registration.graduation_year
-                            }"
-                            @input="touchField('graduation_year')"
-                          />
-                          <small class="text-danger error" v-if="shouldShowError('graduation_year')">
-                            {{ validate.graduation_year.$silentErrors[0]?.$message }}
-                          </small>
-                        </div>
-                        <div class="col-md-12">
-                          <small class="text-muted">
-                            Are your child eligible for a need-based scholarship?
-                            <span class="text-danger">*</span>
-                          </small>
-                          <v-select
-                            v-model="registration.scholarship"
-                            :options="['Yes', 'No']"
-                            placeholder="Select the value"
-                            :on-change="touchField('scholarship')"
-                          />
-                          <small class="text-danger error" v-if="shouldShowError('scholarship')">
-                            {{ validate.scholarship.$silentErrors[0]?.$message }}
-                          </small>
-                        </div>
-                        <div class="col-md-12">
-                          <small class="text-muted">
-                            Which country does your child interest in studying abroad?
-                            <span class="text-danger">*</span>
-                          </small>
-                          <v-select
-                            v-model="registration.destination_country"
-                            :options="['Yes', 'No']"
-                            placeholder="Select the value"
-                            :on-change="touchField('destination_country')"
-                            multiple
-                          />
-                          <small
-                            class="text-danger error"
-                            v-if="shouldShowError('destination_country')"
-                          >
-                            {{ validate.destination_country.$silentErrors[0]?.$message }}
-                          </small>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-  
-                  <div class="row mt-3">
-                    <div class="col-md-12">
-                      <small class="text-muted">
-                        I know this event from
-                        <span class="text-danger">*</span>
-                      </small>
-                      <v-select
-                        v-model="registration.lead_source_id"
-                        :options="['Yes', 'No']"
-                        placeholder="Select the value"
-                        :on-change="touchField('lead_source_id')"
-                      />
-                      <small class="text-danger error" v-if="shouldShowError('lead_source_id')">
-                        {{ validate.lead_source_id.$silentErrors[0]?.$message }}
-                      </small>
-                    </div>
-                  </div>
-                </div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                  <button class="btn btn-sm btn-warning rounded-pill" @click="step = 1">
-                    <font-awesome-icon icon="fa-solid fa-arrow-left" class="me-2" />
-                    Back
-                  </button>
-                  <button class="btn btn-sm btn-primary rounded-pill" @click="nextProcess">
-                    {{ loading ? 'Waiting' : 'Submit' }}
-                    <font-awesome-icon
-                      :icon="loading ? 'fa-solid fa-spinner' : 'fa-solid fa-save'"
-                      class="ms-2"
-                      :pulse="loading"
-                    />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+  <v-card class="shadow mx-auto" max-width="800" border flat>
+    <div class="position-fixed" style="bottom: 2%; left: 95%; z-index: 9999">
+      <div class="dropdown" v-if="errors">
+        <button
+          class="btn btn-danger btn-sm dropdown-toggle"
+          style="font-size: 10px"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <font-awesome-icon icon="fa-info-circle" class=""></font-awesome-icon>
+        </button>
+        <ul class="dropdown-menu">
+          <li v-for="item in errors" :key="item" class="dropdown-item my-0 py-0">
+            <font-awesome-icon
+              icon="fa-info"
+              class="text-warning me-2"
+            ></font-awesome-icon>
+            {{ item[0] }}
+          </li>
+        </ul>
       </div>
     </div>
-  </template>
-  
-  <script>
-  import { computed, defineComponent, onMounted, ref } from 'vue'
-  import { useVuelidate } from '@vuelidate/core'
-  import { required, email, minLength } from '@vuelidate/validators'
-  export default defineComponent({
-    name: 'form-event',
-    props: {
-      formType: String,
-      programId: String,
-    },
-    setup(props) {
-      const progress = ref(null)
-      const step = ref(1)
-      const loading = ref(false)
-      const bg_registration = ref('bg.jpg')
-      const registration = ref({
-        role: 'student',
-        user: '',
-        fullname: '',
-        email: '',
-        phone: '',
-        secondary_name: '',
-        secondary_email: '',
-        secondary_phone: '',
-        school_id: '',
-        graduation_year: '',
-        destination_country: [],
-        scholarship: '',
-        lead_source_id: '',
-        program_id: '',
-        referral: '',
-        have_child: true
-      })
-      const rules = computed(() => ({
-        fullname: {
-          required,
-          minLength: minLength(3)
-        },
-        email: {
-          required,
-          email
-        },
-        phone: {
-          required,
-          minLength: minLength(10)
-        },
-        role: {
-          required
-        },
-        secondary_name: {
-          required
-        },
-        secondary_email: {
-          email
-        },
-        secondary_phone: {
-          minLength: minLength(5)
-        },
-        school_id: {
-          required
-        },
-        graduation_year: {
-          required
-        },
-        destination_country: {
-          required
-        },
-        scholarship: {
-          required
-        },
-        lead_source_id: {
-          required
+    <v-list-item class="bg-surface-light px-6 pt-2" height="100">
+      <template v-slot:title
+        ><h3 class="text-center">
+          <b>Let us know you better by filling out this form!</b>
+        </h3>
+      </template>
+    </v-list-item>
+    <v-progress-linear v-model="progress" color="primary"></v-progress-linear>
+
+    <v-card-text class="text-medium-emphasis pa-6">
+      <v-form ref="form_program" @submit.prevent>
+        <v-row justify="center">
+          <v-col cols="12">
+            <v-row justify="center">
+              <v-col cols="12" md="4">
+                <v-radio-group
+                  inline
+                  v-model="registration.role"
+                  :rules="rules.required"
+                  @update:modelValue="checkRole"
+                >
+                  <v-radio class="me-5" value="student" label="Student"></v-radio>
+                  <v-radio class="ms-5" label="Parent" value="parent"></v-radio>
+                </v-radio-group>
+              </v-col>
+            </v-row>
+          </v-col>
+          <v-col cols="12" md="4">
+            <v-text-field
+              ref="fullname"
+              type="text"
+              variant="solo"
+              :rules="rules.required"
+              required
+              v-model="registration.fullname"
+              @change="checkProgress"
+            >
+              <template v-slot:label
+                >Full Name <span class="text-danger">*</span></template
+              >
+            </v-text-field>
+          </v-col>
+          <v-col cols="12" md="4">
+            <v-text-field
+              ref="email"
+              type="email"
+              variant="solo"
+              :rules="(rules.required, rules.email)"
+              v-model="registration.mail"
+              @change="checkProgress"
+              required
+            >
+              <template v-slot:label>Email <span class="text-danger">*</span></template>
+            </v-text-field>
+          </v-col>
+          <v-col cols="12" md="4">
+            <v-text-field
+              ref="phone"
+              type="tel"
+              variant="solo"
+              v-model="registration.phone"
+              :rules="rules.required"
+              required
+              @change="checkProgress"
+              @input="touchField('phone')"
+            >
+              <template v-slot:label
+                >Phone Number <span class="text-danger">*</span></template
+              >
+            </v-text-field>
+          </v-col>
+          <v-col cols="12" md="4" v-if="registration.role == 'parent'">
+            <v-text-field
+              ref="child_name"
+              label="Child Name"
+              type="text"
+              variant="solo"
+              :rules="rules.required"
+              v-model="registration.secondary_name"
+              @change="checkProgress"
+              required
+            >
+              <template v-slot:label
+                >Child Name <span class="text-danger">*</span></template
+              >
+            </v-text-field>
+          </v-col>
+          <v-col cols="12" md="4" v-if="registration.role == 'parent'">
+            <v-text-field
+              ref="child_mail"
+              label="Child Email"
+              type="text"
+              variant="solo"
+              v-model="registration.secondary_mail"
+            >
+            </v-text-field>
+          </v-col>
+          <v-col cols="12" md="4" v-if="registration.role == 'parent'">
+            <v-text-field
+              ref="child_phone"
+              label="Child Phone"
+              type="text"
+              variant="solo"
+              v-model="registration.secondary_phone"
+              @input="touchField('secondary_phone')"
+            >
+            </v-text-field>
+          </v-col>
+          <v-col cols="12" :md="registration.school_id == 'SCH-0301' ? '6' : '4'">
+            <v-autocomplete
+              chips
+              :items="schools"
+              item-title="sch_name"
+              item-value="sch_id"
+              variant="solo"
+              :rules="rules.required"
+              v-model="registration.school_id"
+              @update:modelValue="checkProgress"
+            >
+              <template v-slot:label>School <span class="text-danger">*</span></template>
+            </v-autocomplete>
+          </v-col>
+          <v-col v-if="registration.school_id == 'SCH-0301'" cols="12" md="6">
+            <v-text-field
+              ref="other_school"
+              type="text"
+              variant="solo"
+              :rules="registration.school_id == 'SCH-0301' ? rules.required : ''"
+              v-model="registration.other_school"
+              @change="checkProgress"
+              required
+            >
+              <template v-slot:label
+                >Other School Name <span class="text-danger">*</span></template
+              >
+            </v-text-field>
+          </v-col>
+          <v-col cols="12" :md="registration.school_id != 'SCH-0301' ? '4' : '6'">
+            <v-autocomplete
+              multiple
+              chips
+              :items="contries"
+              item-title="country"
+              item-value="id"
+              variant="solo"
+              :rules="rules.required"
+              v-model="registration.destination_country"
+              @update:modelValue="checkProgress"
+            >
+              <template v-slot:label>Country <span class="text-danger">*</span></template>
+            </v-autocomplete>
+          </v-col>
+          <v-col cols="12" :md="registration.school_id != 'SCH-0301' ? '4' : '6'">
+            <v-autocomplete
+              chips
+              label="Graduation Year"
+              :items="graduation_list"
+              variant="solo"
+              :rules="rules.required"
+              v-model="registration.graduation_year"
+              @update:modelValue="checkProgress"
+            >
+              <template v-slot:label
+                >Graduation Year <span class="text-danger">*</span></template
+              >
+            </v-autocomplete>
+          </v-col>
+          <!-- <v-col cols="12" lg="12" md="12" sm="12">
+            <v-autocomplete
+              chips
+              :items="interest_progs"
+              item-title="label"
+              item-value="val"
+              variant="solo"
+              :rules="rules.required"
+              v-model="registration.interest_prog"
+              @update:modelValue="checkProgress"
+            >
+              <template v-slot:label
+                >I would like to know more about
+                <span class="text-danger">*</span></template
+              >
+            </v-autocomplete>
+          </v-col> -->
+        </v-row>
+
+        <v-btn
+          :disabled="loading"
+          :loading="loading"
+          block
+          variant="elevated"
+          color="primary"
+          type="submit"
+          class="mt-5"
+          @click="process"
+        >
+          Submit</v-btn
+        >
+      </v-form>
+    </v-card-text>
+  </v-card>
+</template>
+
+<script>
+import { computed, defineComponent, onMounted, ref } from "vue";
+import ApiService from "@/services/ApiService";
+import ClientProgramService from "@/services/ClientProgramService";
+import { showNotif } from "@/helper/notification";
+import { rules } from "@/helper/rules";
+import router from "@/router";
+
+export default defineComponent({
+  name: "form-program",
+  props: {
+    programId: String,
+  },
+  setup(props) {
+    const progress = ref(0);
+    const loading = ref(false);
+    const registration = ref({
+      role: "student",
+      fullname: null,
+      mail: null,
+      phone: null,
+      secondary_name: null,
+      secondary_mail: null,
+      secondary_phone: null,
+      school_id: null,
+      other_school: null,
+      graduation_year: null,
+      destination_country: [],
+    });
+
+    const errors = ref();
+    const schools = ref();
+    const contries = ref();
+    const graduation_list = ref();
+    const selected_data = ref();
+    const interest_progs = ref();
+    const form_program = ref();
+
+    // validasi
+    const student_rule = ref([
+      "role",
+      "fullname",
+      "mail",
+      "phone",
+      "school_id",
+      "graduation_year",
+      "destination_country",
+    ]);
+    const parent_rule = ref([
+      "role",
+      "fullname",
+      "mail",
+      "phone",
+      "secondary_name",
+      "school_id",
+      "graduation_year",
+      "destination_country",
+    ]);
+
+    const newData = (data) => {
+      registration.value[data?.key] = data?.value;
+    };
+
+    const checkRole = () => {
+      checkProgress();
+      if (registration.value.role == "parent") {
+        registration.value.have_child = true;
+      } else {
+        registration.value.secondary_name = "";
+        registration.value.secondary_mail = "";
+        registration.value.secondary_phone = "";
+        registration.value.have_child = false;
+      }
+    };
+
+    const touchField = (field) => {
+      // registration.value[field].$touch();
+      if (field == "phone" || field == "secondary_phone") {
+        acceptNumber(field);
+      }
+    };
+
+    const acceptNumber = (item) => {
+      const phoneNumber = registration.value[item].toString();
+      const formattedNumber = phoneNumber.replace(/(\d{4})(\d{4})(\d{2,4})/, "$1-$2-$3");
+      registration.value[item] = formattedNumber;
+    };
+
+    const getSchools = async () => {
+      const endpoint = "v1/school/";
+      try {
+        const res = await ApiService.get(endpoint);
+        if (res.success) {
+          schools.value = res.data;
+        } else {
+          showNotif("error", res.message);
+          setTimeout(() => {
+            router.push({ name: "NotFound" });
+          }, 2000);
         }
-      }))
-  
-      const school_list = ref()
-      const lead_source_list = ref()
-      const destination_country_list = ref()
-  
-      const getSchool = (alias = null) => {
-        const endpoint = alias ? '' : ''
-  
-        // console.log(endpoint)
+      } catch (error) {
+        console.error(error);
       }
-  
-      const getLeadSource = () => {
-        const endpoint = ''
-  
-        // console.log(endpoint)
-      }
-  
-      const getCountry = () => {
-        const endpoint = ''
-  
-        // console.log(endpoint)
-      }
-  
-      const section_1_rule = ['fullname', 'email', 'phone', 'role']
-      const student_rule = [
-        'school_id',
-        'graduation_year',
-        'destination_country',
-        'scholarship',
-        'lead_source_id'
-      ]
-      const parent_child_rule = [
-        'secondary_name',
-        'school_id',
-        'graduation_year',
-        'destination_country',
-        'scholarship',
-        'lead_source_id'
-      ]
-      const parent_not_child_rule = ['lead_source_id']
-      const validate = useVuelidate(rules, registration)
-  
-      const touchField = (field) => {
-        validate.value[field].$touch()
-        if (field == 'phone' || field == 'secondary_phone') {
-          acceptNumber(field)
+    };
+
+    const getContries = async () => {
+      const endpoint = "v1/get/destination-country";
+      try {
+        const res = await ApiService.get(endpoint);
+        if (res.success) {
+          contries.value = res.data;
+        } else {
+          showNotif("error", res.message);
+          setTimeout(() => {
+            router.push({ name: "NotFound" });
+          }, 2000);
         }
-  
-        checkProgress()
+      } catch (error) {
+        console.error(error);
       }
-  
-      const checkProgress = () => {
-        const progress_array = []
-        for (let index = 0; index < section_1_rule.length; index++) {
-          let value = registration.value[section_1_rule[index]]
-  
-          if (value) {
-            if (shouldShowError(section_1_rule[index])) {
-              progress_array.push(0)
-            } else {
-              progress_array.push(50 / section_1_rule.length, 0)
-            }
+    };
+
+    const setGraduation = async () => {
+      const currentYear = new Date().getFullYear();
+      const data = [];
+      for (let i = currentYear; i <= currentYear + 6; i++) {
+        data.push(i.toString());
+      }
+      graduation_list.value = data;
+      selected_data.value = props.data;
+    };
+
+    // const SetInterestProgs = async () => {
+    //   let data = [];
+
+    //   switch (registration.value.main_prog_id) {
+    //     case "1":
+    //       data = [
+    //         { label: "Admission Mentoring & Scholarship Application", val: "AAUP" },
+    //         { label: "University Application Essay", val: "AAUP" },
+    //         { label: "Academic Tutoring", val: "ACADX" },
+    //         { label: "CV & Personal Branding", val: "AAUP" },
+    //         { label: "SAT & ACT", val: "SATPRIV" },
+    //       ];
+
+    //       interest_progs.value = data;
+    //       break;
+    //   }
+    // };
+
+    const checkProgress = () => {
+      var section =
+        registration.value.role == "student" ? student_rule.value : parent_rule.value;
+
+      var index = section.indexOf("other_school");
+      if (registration.value.school_id == "SCH-0301") {
+        if (index <= -1) {
+          section.push("other_school");
+        }
+      } else {
+        if (index > -1) {
+          section.splice(index, 1);
+        }
+      }
+
+      const progress_array = [];
+      for (let index = 0; index < section.length; index++) {
+        let value = registration.value[section[index]];
+        if (value == null || value == "") {
+          progress_array.push(0);
+        } else {
+          progress_array.push(100 / section.length);
+        }
+      }
+
+      progress.value = progress_array.reduce((accumulator, currentValue) => {
+        return accumulator + currentValue;
+      }, 0);
+    };
+
+    const loadGetParameter = () => {
+      registration.value.interest_prog = props?.programId;
+    };
+
+    const reset = () => {
+      registration.value.role = "student";
+      registration.value.fullname = "";
+      registration.value.mail = "";
+      registration.value.phone = "";
+      registration.value.secondary_name = "";
+      registration.value.secondary_mail = "";
+      registration.value.secondary_phone = "";
+      registration.value.school_id = "";
+      registration.value.other_school = "";
+      registration.value.graduation_year = "";
+      registration.value.destination_country = [];
+    };
+
+    const process = () => {
+      submit();
+    };
+
+    const submit = async () => {
+      const { valid } = await form_program.value.validate();
+
+      if (valid) {
+        loading.value = true;
+        const endpoint = "v1/register/public";
+
+        console.log(registration.value);
+
+        try {
+          const res = await ApiService.post(endpoint, registration.value);
+          if (!res.success) {
+            errors.value = res.error;
+            console.log(errors.value);
+            showNotif(
+              "error",
+              res.message
+                ? res.message
+                : "Please check errors by clicking the bottom right button",
+              "bottom-start"
+            );
           } else {
-            progress_array.push(0)
+            ClientProgramService.saveClientProgram(res);
+            router.push({
+              name: "thanks-program",
+            });
           }
+          loading.value = false;
+        } catch (error) {
+          loading.value = false;
+          showNotif(
+            "error",
+            "Something went wrong while processing the data. Please try again or contact the administrator.",
+            "bottom-start"
+          );
         }
-  
-        if (step.value == 2) {
-          let input_array = []
-          switch (registration.value.role) {
-            case 'parent':
-              if (registration.value.have_child) {
-                input_array = parent_child_rule
-              } else {
-                input_array = parent_not_child_rule
-              }
-              break
-            case 'student':
-              input_array = student_rule
-              break
-            default:
-              break
-          }
-  
-          for (let index = 0; index < input_array.length; index++) {
-            let value = registration.value[input_array[index]]
-  
-            if (value) {
-              if (shouldShowError(input_array[index])) {
-                progress_array.push(0)
-              } else {
-                progress_array.push(50 / input_array.length, 0)
-              }
-            } else {
-              progress_array.push(0)
-            }
-          }
-  
-        }
-        
-        progress.value = progress_array.reduce((accumulator, currentValue) => {
-          return accumulator + currentValue
-        }, 0)
-  
       }
-  
-      const shouldShowError = (field) => {
-        return validate.value[field].$error
-      }
-  
-      const checkingValidation = (array) => {
-        let checking = []
-        array.forEach((element) => {
-          validate.value[element].$validate()
-          if (!validate.value[element].$invalid) {
-            checking.push(true)
-          } else {
-            checking.push(false)
-          }
-        })
-  
-        return !checking.includes(false)
-      }
-  
-      const acceptNumber = (item) => {
-        const phoneNumber = registration.value[item].toString()
-        const formattedNumber = phoneNumber.replace(/(\d{4})(\d{4})(\d{2,4})/, '$1-$2-$3')
-        registration.value[item] = formattedNumber
-      }
-  
-      const nextAdditional = () => {
-        loading.value = true
-        const check = checkingValidation(section_1_rule)
-        if (check) {
-          step.value = 2
-          switch (registration.value.role) {
-            case 'parent':
-              bg_registration.value = 'parent.jpg'
-              break
-            case 'student':
-              bg_registration.value = 'student.avif'
-              break
-  
-            default:
-              break
-          }
-        }
-  
-        setTimeout(() => {
-          loading.value = false
-        }, 1000)
-      }
-  
-      const nextProcess = () => {
-        loading.value = true
-        const role = registration.value.role
-        var validate = false
-  
-        switch (role) {
-          case 'parent':
-            if (registration.value.have_child) {
-              validate = checkingValidation(parent_child_rule)
-            } else {
-              validate = checkingValidation(parent_not_child_rule)
-            }
-            break
-          case 'student':
-            validate = checkingValidation(student_rule)
-            break
-  
-          default:
-            break
-        }
-  
-        if (validate) {
-          submit()
-        }
-  
-        setTimeout(() => {
-          loading.value = false
-        }, 1000)
-      }
-  
-      const submit = () => {
-        console.log(registration.value)
-      }
-  
-      const loadGetParameter = () => {
-        registration.value.program_id = props?.programId
-      }
-  
-      onMounted(() => {
-        getSchool()
-        getLeadSource()
-        getCountry()
-        loadGetParameter()
-      })
-  
-      return {
-        step,
-        loading,
-        progress,
-        registration,
-        school_list,
-        lead_source_list,
-        destination_country_list,
-        rules,
-        validate,
-        bg_registration,
-        touchField,
-        shouldShowError,
-        nextAdditional,
-        nextProcess,
-        submit
-      }
-    }
-  })
-  </script>
-  
+    };
+
+    onMounted(() => {
+      loadGetParameter();
+      getSchools();
+      getContries();
+      setGraduation();
+      // SetInterestProgs();
+    });
+
+    return {
+      loading,
+      errors,
+      registration,
+      schools,
+      contries,
+      graduation_list,
+      interest_progs,
+      newData,
+      checkRole,
+      process,
+      submit,
+      touchField,
+      rules,
+      form_program,
+      student_rule,
+      parent_rule,
+      progress,
+      checkProgress,
+    };
+  },
+});
+</script>
+<style>
+.v-selection-control__input input {
+  opacity: 1 !important;
+  width: 50% !important;
+  /* height: 70% !important; */
+}
+</style>

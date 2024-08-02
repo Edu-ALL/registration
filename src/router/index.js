@@ -72,7 +72,14 @@ const router = createRouter({
         // Menggunakan props untuk mendapatkan parameter
         formType: route.query.form_type,
         programId: route.query.program_id
-      })
+      }),
+      component: () => import('@/views/program/Form.vue')
+
+    },
+    {
+      path: '/thanks/program',
+      name: 'thanks-program',
+      component: () => import('@/views/program/Thanks.vue')
     },
 
     {
