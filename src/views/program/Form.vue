@@ -226,7 +226,7 @@
 </template>
 
 <script>
-import { computed, defineComponent, onMounted, ref } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
 import ApiService from "@/services/ApiService";
 import ClientProgramService from "@/services/ClientProgramService";
 import { showNotif } from "@/helper/notification";
@@ -314,7 +314,7 @@ export default defineComponent({
     };
 
     const getSchools = async () => {
-      const endpoint = "v1/school/";
+      const endpoint = "v1/school";
       try {
         const res = await ApiService.get(endpoint);
         if (res.success) {
