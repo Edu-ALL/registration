@@ -13,10 +13,7 @@
         </button>
         <ul class="dropdown-menu">
           <li v-for="item in errors" :key="item" class="dropdown-item my-0 py-0">
-            <font-awesome-icon
-              icon="fa-info"
-              class="text-warning me-2"
-            ></font-awesome-icon>
+            <font-awesome-icon icon="fa-info" class="text-warning me-2"></font-awesome-icon>
             {{ item[0] }}
           </li>
         </ul>
@@ -59,9 +56,7 @@
               v-model="registration.fullname"
               @change="checkProgress"
             >
-              <template v-slot:label
-                >Full Name <span class="text-danger">*</span></template
-              >
+              <template v-slot:label>Full Name <span class="text-danger">*</span></template>
             </v-text-field>
           </v-col>
           <v-col cols="12" md="4">
@@ -88,9 +83,7 @@
               @change="checkProgress"
               @input="touchField('phone')"
             >
-              <template v-slot:label
-                >Phone Number <span class="text-danger">*</span></template
-              >
+              <template v-slot:label>Phone Number <span class="text-danger">*</span></template>
             </v-text-field>
           </v-col>
           <v-col cols="12" md="4" v-if="registration.role == 'parent'">
@@ -104,9 +97,7 @@
               @change="checkProgress"
               required
             >
-              <template v-slot:label
-                >Child Name <span class="text-danger">*</span></template
-              >
+              <template v-slot:label>Child Name <span class="text-danger">*</span></template>
             </v-text-field>
           </v-col>
           <v-col cols="12" md="4" v-if="registration.role == 'parent'">
@@ -154,9 +145,7 @@
               @change="checkProgress"
               required
             >
-              <template v-slot:label
-                >Other School Name <span class="text-danger">*</span></template
-              >
+              <template v-slot:label>Other School Name <span class="text-danger">*</span></template>
             </v-text-field>
           </v-col>
           <v-col cols="12" :md="registration.school_id != 'SCH-0301' ? '4' : '6'">
@@ -184,9 +173,7 @@
               v-model="registration.graduation_year"
               @update:modelValue="checkProgress"
             >
-              <template v-slot:label
-                >Graduation Year <span class="text-danger">*</span></template
-              >
+              <template v-slot:label>Graduation Year <span class="text-danger">*</span></template>
             </v-autocomplete>
           </v-col>
           <!-- <v-col cols="12" lg="12" md="12" sm="12">
@@ -226,23 +213,24 @@
 </template>
 
 <script>
-import { defineComponent, onMounted, ref } from "vue";
-import ApiService from "@/services/ApiService";
-import ClientProgramService from "@/services/ClientProgramService";
-import { showNotif } from "@/helper/notification";
-import { rules } from "@/helper/rules";
-import router from "@/router";
+import { defineComponent, onMounted, ref } from 'vue'
+import ApiService from '@/services/ApiService'
+import ClientProgramService from '@/services/ClientProgramService'
+import { showNotif } from '@/helper/notification'
+import { rules } from '@/helper/rules'
+import router from '@/router'
 
 export default defineComponent({
-  name: "form-program",
+  name: 'form-program',
   props: {
     programId: String,
+    leadId: String
   },
   setup(props) {
-    const progress = ref(0);
-    const loading = ref(false);
+    const progress = ref(0)
+    const loading = ref(false)
     const registration = ref({
-      role: "student",
+      role: 'student',
       fullname: null,
       mail: null,
       phone: null,
@@ -253,109 +241,110 @@ export default defineComponent({
       other_school: null,
       graduation_year: null,
       destination_country: [],
-    });
+      lead_id: 'LS001'
+    })
 
-    const errors = ref();
-    const schools = ref();
-    const contries = ref();
-    const graduation_list = ref();
-    const selected_data = ref();
-    const interest_progs = ref();
-    const form_program = ref();
+    const errors = ref()
+    const schools = ref()
+    const contries = ref()
+    const graduation_list = ref()
+    const selected_data = ref()
+    const interest_progs = ref()
+    const form_program = ref()
 
     // validasi
     const student_rule = ref([
-      "role",
-      "fullname",
-      "mail",
-      "phone",
-      "school_id",
-      "graduation_year",
-      "destination_country",
-    ]);
+      'role',
+      'fullname',
+      'mail',
+      'phone',
+      'school_id',
+      'graduation_year',
+      'destination_country'
+    ])
     const parent_rule = ref([
-      "role",
-      "fullname",
-      "mail",
-      "phone",
-      "secondary_name",
-      "school_id",
-      "graduation_year",
-      "destination_country",
-    ]);
+      'role',
+      'fullname',
+      'mail',
+      'phone',
+      'secondary_name',
+      'school_id',
+      'graduation_year',
+      'destination_country'
+    ])
 
     const newData = (data) => {
-      registration.value[data?.key] = data?.value;
-    };
+      registration.value[data?.key] = data?.value
+    }
 
     const checkRole = () => {
-      checkProgress();
-      if (registration.value.role == "parent") {
-        registration.value.have_child = true;
+      checkProgress()
+      if (registration.value.role == 'parent') {
+        registration.value.have_child = true
       } else {
-        registration.value.secondary_name = "";
-        registration.value.secondary_mail = "";
-        registration.value.secondary_phone = "";
-        registration.value.have_child = false;
+        registration.value.secondary_name = ''
+        registration.value.secondary_mail = ''
+        registration.value.secondary_phone = ''
+        registration.value.have_child = false
       }
-    };
+    }
 
     const touchField = (field) => {
       // registration.value[field].$touch();
-      if (field == "phone" || field == "secondary_phone") {
-        acceptNumber(field);
+      if (field == 'phone' || field == 'secondary_phone') {
+        acceptNumber(field)
       }
-    };
+    }
 
     const acceptNumber = (item) => {
-      const phoneNumber = registration.value[item].toString();
-      const formattedNumber = phoneNumber.replace(/(\d{4})(\d{4})(\d{2,4})/, "$1-$2-$3");
-      registration.value[item] = formattedNumber;
-    };
+      const phoneNumber = registration.value[item].toString()
+      const formattedNumber = phoneNumber.replace(/(\d{4})(\d{4})(\d{2,4})/, '$1-$2-$3')
+      registration.value[item] = formattedNumber
+    }
 
     const getSchools = async () => {
-      const endpoint = "v1/school";
+      const endpoint = 'v1/school'
       try {
-        const res = await ApiService.get(endpoint);
+        const res = await ApiService.get(endpoint)
         if (res.success) {
-          schools.value = res.data;
+          schools.value = res.data
         } else {
-          showNotif("error", res.message);
+          showNotif('error', res.message)
           setTimeout(() => {
-            router.push({ name: "NotFound" });
-          }, 2000);
+            router.push({ name: 'NotFound' })
+          }, 2000)
         }
       } catch (error) {
-        console.error(error);
+        console.error(error)
       }
-    };
+    }
 
     const getContries = async () => {
-      const endpoint = "v1/get/destination-country";
+      const endpoint = 'v1/get/destination-country'
       try {
-        const res = await ApiService.get(endpoint);
+        const res = await ApiService.get(endpoint)
         if (res.success) {
-          contries.value = res.data;
+          contries.value = res.data
         } else {
-          showNotif("error", res.message);
+          showNotif('error', res.message)
           setTimeout(() => {
-            router.push({ name: "NotFound" });
-          }, 2000);
+            router.push({ name: 'NotFound' })
+          }, 2000)
         }
       } catch (error) {
-        console.error(error);
+        console.error(error)
       }
-    };
+    }
 
     const setGraduation = async () => {
-      const currentYear = new Date().getFullYear();
-      const data = [];
+      const currentYear = new Date().getFullYear()
+      const data = []
       for (let i = currentYear; i <= currentYear + 6; i++) {
-        data.push(i.toString());
+        data.push(i.toString())
       }
-      graduation_list.value = data;
-      selected_data.value = props.data;
-    };
+      graduation_list.value = data
+      selected_data.value = props.data
+    }
 
     // const SetInterestProgs = async () => {
     //   let data = [];
@@ -376,103 +365,109 @@ export default defineComponent({
     // };
 
     const checkProgress = () => {
-      var section =
-        registration.value.role == "student" ? student_rule.value : parent_rule.value;
+      var section = registration.value.role == 'student' ? student_rule.value : parent_rule.value
 
-      var index = section.indexOf("other_school");
-      if (registration.value.school_id == "SCH-0301") {
+      var index = section.indexOf('other_school')
+      if (registration.value.school_id == 'SCH-0301') {
         if (index <= -1) {
-          section.push("other_school");
+          section.push('other_school')
         }
       } else {
         if (index > -1) {
-          section.splice(index, 1);
+          section.splice(index, 1)
         }
       }
 
-      const progress_array = [];
+      const progress_array = []
       for (let index = 0; index < section.length; index++) {
-        let value = registration.value[section[index]];
-        if (value == null || value == "") {
-          progress_array.push(0);
+        let value = registration.value[section[index]]
+        if (value == null || value == '') {
+          progress_array.push(0)
         } else {
-          progress_array.push(100 / section.length);
+          progress_array.push(100 / section.length)
         }
       }
 
       progress.value = progress_array.reduce((accumulator, currentValue) => {
-        return accumulator + currentValue;
-      }, 0);
-    };
+        return accumulator + currentValue
+      }, 0)
+    }
 
     const loadGetParameter = () => {
-      registration.value.interest_prog = props?.programId;
-    };
+      registration.value.interest_prog = props?.programId
+    }
 
     const reset = () => {
-      registration.value.role = "student";
-      registration.value.fullname = "";
-      registration.value.mail = "";
-      registration.value.phone = "";
-      registration.value.secondary_name = "";
-      registration.value.secondary_mail = "";
-      registration.value.secondary_phone = "";
-      registration.value.school_id = "";
-      registration.value.other_school = "";
-      registration.value.graduation_year = "";
-      registration.value.destination_country = [];
-    };
+      registration.value.role = 'student'
+      registration.value.fullname = ''
+      registration.value.mail = ''
+      registration.value.phone = ''
+      registration.value.secondary_name = ''
+      registration.value.secondary_mail = ''
+      registration.value.secondary_phone = ''
+      registration.value.school_id = ''
+      registration.value.other_school = ''
+      registration.value.graduation_year = ''
+      registration.value.destination_country = []
+    }
 
     const process = () => {
-      submit();
-    };
+      submit()
+    }
 
     const submit = async () => {
-      const { valid } = await form_program.value.validate();
-
+      const { valid } = await form_program.value.validate()
+            
       if (valid) {
-        loading.value = true;
-        const endpoint = "v1/register/public";
-
-        console.log(registration.value);
+        loading.value = true
+        const endpoint = 'v1/register/public'
 
         try {
-          const res = await ApiService.post(endpoint, registration.value);
+          const res = await ApiService.post(endpoint, registration.value)
           if (!res.success) {
-            errors.value = res.error;
-            console.log(errors.value);
+            errors.value = res.error
+            console.log(errors.value)
             showNotif(
-              "error",
-              res.message
-                ? res.message
-                : "Please check errors by clicking the bottom right button",
-              "bottom-start"
-            );
+              'error',
+              res.message ? res.message : 'Please check errors by clicking the bottom right button',
+              'bottom-start'
+            )
           } else {
-            ClientProgramService.saveClientProgram(res);
+            ClientProgramService.saveClientProgram(res)
             router.push({
-              name: "thanks-program",
-            });
+              name: 'thanks-program'
+            })
           }
-          loading.value = false;
+          loading.value = false
         } catch (error) {
-          loading.value = false;
+          loading.value = false
           showNotif(
-            "error",
-            "Something went wrong while processing the data. Please try again or contact the administrator.",
-            "bottom-start"
-          );
+            'error',
+            'Something went wrong while processing the data. Please try again or contact the administrator.',
+            'bottom-start'
+          )
         }
       }
-    };
+    }
+
+    const checkProgramAndLead = () => {
+      if (props.leadId) {
+        registration.value.lead_id = props.leadId
+      }
+
+      if (!props.programId) {
+        router.push({ name: 'NotFound' })
+      }
+    }
 
     onMounted(() => {
-      loadGetParameter();
-      getSchools();
-      getContries();
-      setGraduation();
+      loadGetParameter()
+      getSchools()
+      getContries()
+      setGraduation()
+      checkProgramAndLead()
       // SetInterestProgs();
-    });
+    })
 
     return {
       loading,
@@ -492,10 +487,10 @@ export default defineComponent({
       student_rule,
       parent_rule,
       progress,
-      checkProgress,
-    };
-  },
-});
+      checkProgress
+    }
+  }
+})
 </script>
 <style>
 .v-selection-control__input input {

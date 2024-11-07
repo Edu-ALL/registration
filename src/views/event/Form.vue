@@ -923,6 +923,10 @@ export default defineComponent({
         const res = await ApiService.get(endpoint)
         if (res.success) {
           event.value = res.data
+          
+          if(!event.value.active_event) {
+            router.push({ name: 'NotFound' })
+          } 
         } else {
           showNotif('error', res.message)
           setTimeout(() => {
