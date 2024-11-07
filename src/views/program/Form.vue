@@ -417,8 +417,8 @@ export default defineComponent({
 
     const submit = async () => {
       const { valid } = await form_program.value.validate()
-            
       if (valid) {
+        window.parent.postMessage('submitButtonClicked', '*')
         loading.value = true
         const endpoint = 'v1/register/public'
 
