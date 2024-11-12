@@ -23,7 +23,8 @@ const router = createRouter({
         attendStatus: route.query.as,
         status: route.query.s,
         type: route.query.t,
-        assessment: route.query.a
+        assessment: route.query.a,
+        leadId: route.query.lead_id,
       }),
       component: () => import('@/views/event/Form.vue')
     },

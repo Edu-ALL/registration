@@ -441,6 +441,8 @@ export default defineComponent({
           loading.value = false
         } catch (error) {
           loading.value = false
+          console.log(error);
+          
           showNotif(
             'error',
             'Something went wrong while processing the data. Please try again or contact the administrator.',

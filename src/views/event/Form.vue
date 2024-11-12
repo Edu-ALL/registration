@@ -528,7 +528,7 @@
                   </div>
 
                   <div class="row mt-3">
-                    <div class="mb-3" :class="status == 'ots' ? 'col-md-9' : 'col-md-12'">
+                    <div class="mb-3" :class="status == 'ots' ? 'col-md-9' : 'col-md-12'" v-if="!props.leadId">
                       <small class="text-muted label">
                         <box-icon name="link" size="xs" color="#797575"></box-icon>
                         I know this event from
@@ -619,6 +619,7 @@ export default defineComponent({
     attendStatus: String,
     type: String,
     assessment: Boolean,
+    leadId: String
   },
   components: {
     School,
@@ -895,9 +896,9 @@ export default defineComponent({
           setTimeout(() => {
             ClientEventService.saveClientEvent(res)
 
-            if(props.assessment) {
-              window.open("https://www.w3schools.com");
-              console.log(res);
+            if (props.assessment) {
+              window.open('https://www.w3schools.com')
+              console.log(res)
             } else {
               router.push({
                 name: 'thanks-event',
@@ -923,10 +924,10 @@ export default defineComponent({
         const res = await ApiService.get(endpoint)
         if (res.success) {
           event.value = res.data
-          
+
           if(!event.value.active_event) {
             router.push({ name: 'NotFound' })
-          } 
+          }
         } else {
           showNotif('error', res.message)
           setTimeout(() => {
@@ -943,6 +944,7 @@ export default defineComponent({
       registration.value.event_type = props.eventType ? props?.eventType : null
       registration.value.status = props.status ? props?.status?.toUpperCase() : 'PR'
       registration.value.attend_status = props.attendStatus ? props?.attendStatus : null
+      registration.value.lead_source_id = props.leadId ? props?.leadId : null
     }
 
     const reset = () => {
@@ -984,6 +986,7 @@ export default defineComponent({
       rules,
       validate,
       event,
+      props,
       checkRole,
       checkComponent,
       newData,
