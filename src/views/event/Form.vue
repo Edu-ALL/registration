@@ -896,10 +896,10 @@ export default defineComponent({
           setTimeout(() => {
             ClientEventService.saveClientEvent(res)
 
-            if (props.assessment) {
-              window.open('https://www.w3schools.com')
-              console.log(res)
-            } else {
+            // if (props.assessment) {
+            //   window.open('https://assessment.edu-all.com/')
+            //   console.log(res)
+            // } else {
               router.push({
                 name: 'thanks-event',
                 params: {
@@ -907,7 +907,7 @@ export default defineComponent({
                   type: props.type == 'onsite' ? 'onsite' : 'self'
                 }
               })
-            }
+            // }
             reset()
           }, 2000)
         }
