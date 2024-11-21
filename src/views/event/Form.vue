@@ -882,6 +882,11 @@ export default defineComponent({
     const submit = async () => {
       loading.value = true
       const endpoint = 'v1/register/event'
+
+      // Checking Email and Phone is the same with Secondary Email and Phone 
+      if (registration.value.phone === registration.value.secondary_phone) registration.value.secondary_phone = '';
+      if (registration.value.mail === registration.value.secondary_email) registration.value.secondary_email = '';
+
       try {
         const res = await ApiService.post(endpoint, registration.value)
         if (!res.success) {
