@@ -24,7 +24,7 @@ const router = createRouter({
         status: route.query.s,
         type: route.query.t,
         assessment: route.query.a,
-        leadId: route.query.lead_id,
+        leadId: route.query.lead_id
       }),
       component: () => import('@/views/event/Form.vue')
     },
@@ -73,10 +73,20 @@ const router = createRouter({
         // Menggunakan props untuk mendapatkan parameter
         formType: route.query.form_type,
         programId: route.query.program_id,
-        leadId: route.query.lead_id,
+        leadId: route.query.lead_id
       }),
       component: () => import('@/views/program/Form.vue')
-
+    },
+    {
+      path: '/form/program/ads',
+      name: 'program',
+      props: (route) => ({
+        // Menggunakan props untuk mendapatkan parameter
+        title: route.query.title,
+        programId: route.query.program_id,
+        leadId: route.query.lead_id
+      }),
+      component: () => import('@/views/program/FormAds.vue')
     },
     {
       path: '/thanks/program',
