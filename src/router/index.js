@@ -79,7 +79,7 @@ const router = createRouter({
     },
     {
       path: '/form/program/ads',
-      name: 'program',
+      name: 'program-ads',
       props: (route) => ({
         // Menggunakan props untuk mendapatkan parameter
         title: route.query.title,
