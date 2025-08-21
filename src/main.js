@@ -14,6 +14,11 @@ import QrReader from 'vue3-qr-reader'
 import VueQrcode from 'vue-qrcode'
 import { Vue3ProgressPlugin } from '@marcoschulte/vue3-progress'
 import VueLazyload from 'vue-lazyload'
+// Vuetify
+import 'vuetify/styles'
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
 
 /* import the fontawesome core */
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -24,6 +29,11 @@ import { fas } from '@fortawesome/free-solid-svg-icons'
 library.add(fas)
 
 import './boostrap'
+
+const vuetify = createVuetify({
+  components,
+  directives,
+})
 
 const app = createApp(App)
 
@@ -40,6 +50,7 @@ app.use(router)
 app.use(QrReader)
 app.use(Vue3ProgressPlugin)
 app.use(VueLazyload)
+app.use(vuetify)
 app.component('vue-qrcode', VueQrcode)
 app.component('font-awesome-icon', FontAwesomeIcon)
 app.component('v-select', vSelect)

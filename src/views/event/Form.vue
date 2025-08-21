@@ -528,7 +528,7 @@
                   </div>
 
                   <div class="row mt-3">
-                    <div class="mb-3" :class="status == 'ots' ? 'col-md-9' : 'col-md-12'">
+                    <div class="mb-3" :class="status == 'ots' ? 'col-md-9' : 'col-md-12'" v-if="!props.leadId">
                       <small class="text-muted label">
                         <box-icon name="link" size="xs" color="#797575"></box-icon>
                         I know this event from
@@ -619,6 +619,7 @@ export default defineComponent({
     attendStatus: String,
     type: String,
     assessment: Boolean,
+    leadId: String
   },
   components: {
     School,
@@ -881,6 +882,11 @@ export default defineComponent({
     const submit = async () => {
       loading.value = true
       const endpoint = 'v1/register/event'
+
+      // Checking Email and Phone is the same with Secondary Email and Phone 
+      if (registration.value.phone === registration.value.secondary_phone) registration.value.secondary_phone = '';
+      if (registration.value.mail === registration.value.secondary_email) registration.value.secondary_email = '';
+
       try {
         const res = await ApiService.post(endpoint, registration.value)
         if (!res.success) {
@@ -895,10 +901,10 @@ export default defineComponent({
           setTimeout(() => {
             ClientEventService.saveClientEvent(res)
 
-            if(props.assessment) {
-              window.open("https://www.w3schools.com");
-              console.log(res);
-            } else {
+            // if (props.assessment) {
+            //   window.open('https://assessment.edu-all.com/')
+            //   console.log(res)
+            // } else {
               router.push({
                 name: 'thanks-event',
                 params: {
@@ -906,7 +912,7 @@ export default defineComponent({
                   type: props.type == 'onsite' ? 'onsite' : 'self'
                 }
               })
-            }
+            // }
             reset()
           }, 2000)
         }
@@ -923,6 +929,10 @@ export default defineComponent({
         const res = await ApiService.get(endpoint)
         if (res.success) {
           event.value = res.data
+
+          if(!event.value.active_event) {
+            router.push({ name: 'NotFound' })
+          }
         } else {
           showNotif('error', res.message)
           setTimeout(() => {
@@ -939,6 +949,7 @@ export default defineComponent({
       registration.value.event_type = props.eventType ? props?.eventType : null
       registration.value.status = props.status ? props?.status?.toUpperCase() : 'PR'
       registration.value.attend_status = props.attendStatus ? props?.attendStatus : null
+      registration.value.lead_source_id = props.leadId ? props?.leadId : null
     }
 
     const reset = () => {
@@ -980,6 +991,7 @@ export default defineComponent({
       rules,
       validate,
       event,
+      props,
       checkRole,
       checkComponent,
       newData,
